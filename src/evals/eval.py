@@ -35,7 +35,7 @@ def main(cfg):
     args.xk_for_one_shot_sampling = 0  # top-k + extra k results for one-shot sampling
 
     args.text_decoder_strategy = "one_shot"  # greedy | beam | one_shot
-    args.ranking_method = "none"  # clip, sim, ppl, prob, none
+    args.ranking_method = "prob"  # clip, sim, ppl, prob, none
     args.max_gen_len: int = 64
 
     args.sim_reduction = "mean"
