@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+# inputs
+INPUT_SCRIPT=$1
+INPUT_ARGVS=${@:2}
+
+echo "+ INPUT_ARGVS: $INPUT_ARGVS"
+
+# if the input script is not found, exit
+if [ ! -f $INPUT_SCRIPT ]; then
+    echo "$INPUT_SCRIPT not found"
+    exit 1
+fi
+
+# envs
+export LD_LIBRARY_PATH=/opt/amazon/efa/lib:$LD_LIBRARY_PATH
+export CUDA_LAUNCH_BLOCKING=0
+export OMP_NUM_THREADS=1
+export FI_EFA_USE_DEVICE_RDMA=1 # use for p4d
+export FI_EFA_FORK_SAFE=1
+export FI_LOG_LEVEL=1
+export FI_PROVIDER=efa
+export FI_EFA_ENABLE_SHM_TRANSFER=1
+export NCCL_DEBUG=INFO
+export NCCL_PROTO=simple
+
+# info
+NODES_ARRAY=($(scontrol show hostnames $SLURM_JOB_NODELIST))
+HEAD_NODE=${NODES_ARRAY[0]}
+HEAD_NODE_IP=$(srun --nodes=1 --ntasks=1 -w "$HEAD_NODE" hostname --ip-address | awk '{print $1}')
+WORLD_SIZE=$SLURM_JOB_NUM_NODES
+echo "+ NODES_ARRAY: ${NODES_ARRAY[@]}"
+echo "+ HEAD_NODE: $HEAD_NODE"
+echo "+ HEAD_NODE_IP: $HEAD_NODE_IP"
+echo "+ RDZV_ADDR: $RDZV_ADDR"
+echo "+ WORLD_SIZE: $WORLD_SIZE"
+
+# nums of GPUs
+NGPUS=$(nvidia-smi -L | wc -l)
+echo "+ NGPUS: $NGPUS"
+if [ $NGPUS -eq 0 ]; then
+    echo "No GPU found"
+    exit 1
+fi
+
+# fire up
+set -x
+srun torchrun \
+    --rdzv_id $RANDOM \
+    --rdzv_backend c10d \
+    --rdzv-endpoint $HEAD_NODE_IP:12317 \
+    --nnode $WORLD_SIZE \
+    --nproc_per_node $NGPUS \
+    $INPUT_SCRIPT \
+    $INPUT_ARGVS

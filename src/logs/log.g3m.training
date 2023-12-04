@@ -1,0 +1,740 @@
++ INPUT_ARGVS: configs/config_g3m.py
++ NODES_ARRAY: a100-st2-p4de24xlarge-13 a100-st2-p4de24xlarge-14 a100-st2-p4de24xlarge-15 a100-st2-p4de24xlarge-16
++ HEAD_NODE: a100-st2-p4de24xlarge-13
++ HEAD_NODE_IP: 10.200.127.88
++ RDZV_ADDR: 
++ WORLD_SIZE: 4
++ NGPUS: 8
++ srun torchrun --rdzv_id 29413 --rdzv_backend c10d --rdzv-endpoint 10.200.127.88:12317 --nnode 4 --nproc_per_node 8 train.py configs/config_g3m.py
+master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+> initializing model parallel with size 32
+> initializing ddp with size 1
+> initializing pipeline with size 1
+> local_rank: 3, world_size: 32, global_rank: 27
+> local_rank: 6, world_size: 32, global_rank: 30
+> local_rank: 5, world_size: 32, global_rank: 29
+> local_rank: 1, world_size: 32, global_rank: 25
+> local_rank: 7, world_size: 32, global_rank: 23
+> local_rank: 6, world_size: 32, global_rank: 14
+> local_rank: 1, world_size: 32, global_rank: 9
+> local_rank: 0, world_size: 32, global_rank: 8
+> local_rank: 5, world_size: 32, global_rank: 13
+> local_rank: 5, world_size: 32, global_rank: 21
+> local_rank: 3, world_size: 32, global_rank: 19
+> local_rank: 3, world_size: 32, global_rank: 11
+> local_rank: 4, world_size: 32, global_rank: 20
+> local_rank: 1, world_size: 32, global_rank: 17
+> local_rank: 7, world_size: 32, global_rank: 31
+> local_rank: 2, world_size: 32, global_rank: 26
+> local_rank: 6, world_size: 32, global_rank: 22
+> local_rank: 4, world_size: 32, global_rank: 28
+> local_rank: 0, world_size: 32, global_rank: 24
+> local_rank: 0, world_size: 32, global_rank: 16
+> local_rank: 2, world_size: 32, global_rank: 18
+> local_rank: 2, world_size: 32, global_rank: 10
+> local_rank: 2, world_size: 32, global_rank: 2
+> local_rank: 7, world_size: 32, global_rank: 7
+> local_rank: 1, world_size: 32, global_rank: 1
+> local_rank: 4, world_size: 32, global_rank: 4
+> local_rank: 5, world_size: 32, global_rank: 5
+> local_rank: 4, world_size: 32, global_rank: 12
+> local_rank: 6, world_size: 32, global_rank: 6
+> local_rank: 3, world_size: 32, global_rank: 3
+> local_rank: 7, world_size: 32, global_rank: 15
+> local_rank: 0, world_size: 32, global_rank: 0
+[17:23:40.399] training params:
+[17:23:40.399] - ckpt_root_unsafe_pool: /checkpoints
+[17:23:40.399] - data_root: /root
+[17:23:40.399] - ckpt_root: /root/checkpoints
+[17:23:40.399] - cache_root: /root/checkpoints/cache
+[17:23:40.399] - ckpt_dir: /root/checkpoints/x
+[17:23:40.399] - hf_cache_dir: /root/checkpoints/huggingface
+[17:23:40.399] - results_dir: /root/checkpoints/results
+[17:23:40.399] - exp_code: 0.0.1.g3m.slm1b.llama2
+[17:23:40.399] - data_name: ('cc3m', 'sbu', 'coco')
+[17:23:40.399] - resume: False
+[17:23:40.399] - resume_ckpt_path: None
+[17:23:40.399] - from_scratch: True
+[17:23:40.399] - seed: 42
+[17:23:40.399] - input_size: 224
+[17:23:40.399] - batch_size: 16
+[17:23:40.399] - num_workers: 11
+[17:23:40.399] - pin_mem: True
+[17:23:40.399] - parallel_mode: ddp
+[17:23:40.399] - lr: 1e-05
+[17:23:40.399] - lr_min: 0.0
+[17:23:40.399] - wd: 0.1
+[17:23:40.399] - epochs: 3
+[17:23:40.399] - warmup_ratio: 0.2
+[17:23:40.399] - warmup_steps: 2000
+[17:23:40.399] - dtype: float16
+[17:23:40.399] - force_to_use_fp16: True
+[17:23:40.399] - compile: False
+[17:23:40.399] - gradient_accumulation_steps: 1
+[17:23:40.400] - grad_clip: 0.0
+[17:23:40.400] - log_interval: 100
+[17:23:40.400] - ckpt_save_num: 10
+[17:23:40.400] - ckpt_save_interval: 20000
+[17:23:40.400] - enable_prompt_augmentation: True
+[17:23:40.400] - special_tokens: ('<|image|>',)
+[17:23:40.400] - special_tokens_to_train: ()
+[17:23:40.400] - rm_eos_token_for_objs: True
+[17:23:40.400] - label_contains_number: False
+[17:23:40.400] - group_size_per_batch_merge: 1
+[17:23:40.400] - shave_language_decoder_at: 6
+[17:23:40.400] - partial_train_lang_output: False
+[17:23:40.400] - partial_train_lang_tok_embeddings: True
+[17:23:40.400] - weight_loss_cap: 0.0
+[17:23:40.400] - weight_loss_obj: 1.0
+[17:23:40.400] - prefix_image_tok_embeds: True
+[17:23:40.400] - decouple_label_tok_embeds: True
+[17:23:40.400] - clip_model: ViT-L/14
+[17:23:40.400] - clip_dir: /root/checkpoints/clip
+[17:23:40.400] - llama_version: 2
+[17:23:40.400] - llama_model: 7B
+[17:23:40.400] - llama_dir: /root/checkpoints/llama-2/llama-2-7b
+[17:23:40.400] - tokenizer_path: /root/checkpoints/llama-2/tokenizer.model
+[17:23:40.400] - max_seq_len: 512
+[17:23:40.400] - max_gen_len: 64
+[17:23:40.400] - text_decoder_strategy: one_shot
+[17:23:40.400] - greedy_func: top_k
+[17:23:40.400] - beam_size: 3
+[17:23:40.400] - beam_patience: 1.0
+[17:23:40.400] - temperature: 1.0
+[17:23:40.400] - penalty: 1.2
+[17:23:40.400] - top_p: 0.9
+[17:23:40.400] - top_k: 1
+[17:23:40.400] - eval_ckpt_path:
+[17:23:40.400] - jupyter_mode: False
+[17:23:40.402] LLaMA model params: {'dim': 4096, 'n_layers': 32, 'n_heads': 32, 'n_kv_heads': None, 'vocab_size': -1, 'multiple_of': 256, 'ffn_dim_multiplier': None, 'norm_eps': 1e-05, 'max_batch_size': 1, 'max_seq_len': 512, 'kv_cached_attention': False}
+[17:23:40.424] Reloaded SentencePiece model from /root/checkpoints/llama-2/tokenizer.model
+[17:23:40.424] LLaMA tokenizer info: self.n_words: 32000, self.bos_id: 1, self.eos_id: 2, self.pad_id: -1
+[17:23:40.424] - add special tokens: {32000: '<|image|>', 32001: '<|empty|>'}
+[17:23:40.425] - self.n_special_tokens: 2
+[17:23:40.425] - self.n_words: 32002
+[17:23:42.697] loading checkpoints /root/checkpoints/llama-2/llama-2-7b/consolidated.00.pth on device cuda:0
+[17:24:32.896] datapipe + cc3m with length 2698118
+[17:24:32.896] datapipe + sbu with length 828816
+[17:24:32.896] datapipe + coco with length 118287
+[17:24:32.896] dataloader shards info:  rank 0 / world_size 32 :  len 113914 / 3645221
+...
+[NCCL][INFO]
+...
+[17:24:41.685] total params: 1783.84 M, 1.78 B
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.class_embedding                              , torch.Size([1024])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.positional_embedding                         , torch.Size([257, 1024])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.logit_scale                                  , torch.Size([])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.conv1.weight                                 , torch.Size([1024, 3, 14, 14])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.ln_pre.weight                                , torch.Size([1024])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.ln_pre.bias                                  , torch.Size([1024])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.0.attn.in_proj_weight  , torch.Size([3072, 1024])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.0.attn.in_proj_bias    , torch.Size([3072])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.0.attn.out_proj.weight , torch.Size([1024, 1024])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.0.attn.out_proj.bias   , torch.Size([1024])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.0.ln_1.weight          , torch.Size([1024])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.0.ln_1.bias            , torch.Size([1024])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.0.mlp.c_fc.weight      , torch.Size([4096, 1024])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.0.mlp.c_fc.bias        , torch.Size([4096])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.0.mlp.c_proj.weight    , torch.Size([1024, 4096])
+[17:24:41.686] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.0.mlp.c_proj.bias      , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.0.ln_2.weight          , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.0.ln_2.bias            , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.1.attn.in_proj_weight  , torch.Size([3072, 1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.1.attn.in_proj_bias    , torch.Size([3072])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.1.attn.out_proj.weight , torch.Size([1024, 1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.1.attn.out_proj.bias   , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.1.ln_1.weight          , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.1.ln_1.bias            , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.1.mlp.c_fc.weight      , torch.Size([4096, 1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.1.mlp.c_fc.bias        , torch.Size([4096])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.1.mlp.c_proj.weight    , torch.Size([1024, 4096])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.1.mlp.c_proj.bias      , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.1.ln_2.weight          , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.1.ln_2.bias            , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.2.attn.in_proj_weight  , torch.Size([3072, 1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.2.attn.in_proj_bias    , torch.Size([3072])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.2.attn.out_proj.weight , torch.Size([1024, 1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.2.attn.out_proj.bias   , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.2.ln_1.weight          , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.2.ln_1.bias            , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.2.mlp.c_fc.weight      , torch.Size([4096, 1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.2.mlp.c_fc.bias        , torch.Size([4096])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.2.mlp.c_proj.weight    , torch.Size([1024, 4096])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.2.mlp.c_proj.bias      , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.2.ln_2.weight          , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.2.ln_2.bias            , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.3.attn.in_proj_weight  , torch.Size([3072, 1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.3.attn.in_proj_bias    , torch.Size([3072])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.3.attn.out_proj.weight , torch.Size([1024, 1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.3.attn.out_proj.bias   , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.3.ln_1.weight          , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.3.ln_1.bias            , torch.Size([1024])
+[17:24:41.687] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.3.mlp.c_fc.weight      , torch.Size([4096, 1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.3.mlp.c_fc.bias        , torch.Size([4096])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.3.mlp.c_proj.weight    , torch.Size([1024, 4096])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.3.mlp.c_proj.bias      , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.3.ln_2.weight          , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.3.ln_2.bias            , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.4.attn.in_proj_weight  , torch.Size([3072, 1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.4.attn.in_proj_bias    , torch.Size([3072])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.4.attn.out_proj.weight , torch.Size([1024, 1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.4.attn.out_proj.bias   , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.4.ln_1.weight          , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.4.ln_1.bias            , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.4.mlp.c_fc.weight      , torch.Size([4096, 1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.4.mlp.c_fc.bias        , torch.Size([4096])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.4.mlp.c_proj.weight    , torch.Size([1024, 4096])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.4.mlp.c_proj.bias      , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.4.ln_2.weight          , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.4.ln_2.bias            , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.5.attn.in_proj_weight  , torch.Size([3072, 1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.5.attn.in_proj_bias    , torch.Size([3072])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.5.attn.out_proj.weight , torch.Size([1024, 1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.5.attn.out_proj.bias   , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.5.ln_1.weight          , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.5.ln_1.bias            , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.5.mlp.c_fc.weight      , torch.Size([4096, 1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.5.mlp.c_fc.bias        , torch.Size([4096])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.5.mlp.c_proj.weight    , torch.Size([1024, 4096])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.5.mlp.c_proj.bias      , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.5.ln_2.weight          , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.5.ln_2.bias            , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.6.attn.in_proj_weight  , torch.Size([3072, 1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.6.attn.in_proj_bias    , torch.Size([3072])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.6.attn.out_proj.weight , torch.Size([1024, 1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.6.attn.out_proj.bias   , torch.Size([1024])
+[17:24:41.688] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.6.ln_1.weight          , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.6.ln_1.bias            , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.6.mlp.c_fc.weight      , torch.Size([4096, 1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.6.mlp.c_fc.bias        , torch.Size([4096])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.6.mlp.c_proj.weight    , torch.Size([1024, 4096])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.6.mlp.c_proj.bias      , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.6.ln_2.weight          , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.6.ln_2.bias            , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.7.attn.in_proj_weight  , torch.Size([3072, 1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.7.attn.in_proj_bias    , torch.Size([3072])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.7.attn.out_proj.weight , torch.Size([1024, 1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.7.attn.out_proj.bias   , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.7.ln_1.weight          , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.7.ln_1.bias            , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.7.mlp.c_fc.weight      , torch.Size([4096, 1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.7.mlp.c_fc.bias        , torch.Size([4096])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.7.mlp.c_proj.weight    , torch.Size([1024, 4096])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.7.mlp.c_proj.bias      , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.7.ln_2.weight          , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.7.ln_2.bias            , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.8.attn.in_proj_weight  , torch.Size([3072, 1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.8.attn.in_proj_bias    , torch.Size([3072])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.8.attn.out_proj.weight , torch.Size([1024, 1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.8.attn.out_proj.bias   , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.8.ln_1.weight          , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.8.ln_1.bias            , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.8.mlp.c_fc.weight      , torch.Size([4096, 1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.8.mlp.c_fc.bias        , torch.Size([4096])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.8.mlp.c_proj.weight    , torch.Size([1024, 4096])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.8.mlp.c_proj.bias      , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.8.ln_2.weight          , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.8.ln_2.bias            , torch.Size([1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.9.attn.in_proj_weight  , torch.Size([3072, 1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.9.attn.in_proj_bias    , torch.Size([3072])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.9.attn.out_proj.weight , torch.Size([1024, 1024])
+[17:24:41.689] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.9.attn.out_proj.bias   , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.9.ln_1.weight          , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.9.ln_1.bias            , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.9.mlp.c_fc.weight      , torch.Size([4096, 1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.9.mlp.c_fc.bias        , torch.Size([4096])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.9.mlp.c_proj.weight    , torch.Size([1024, 4096])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.9.mlp.c_proj.bias      , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.9.ln_2.weight          , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.9.ln_2.bias            , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.10.attn.in_proj_weight , torch.Size([3072, 1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.10.attn.in_proj_bias   , torch.Size([3072])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.10.attn.out_proj.weight, torch.Size([1024, 1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.10.attn.out_proj.bias  , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.10.ln_1.weight         , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.10.ln_1.bias           , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.10.mlp.c_fc.weight     , torch.Size([4096, 1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.10.mlp.c_fc.bias       , torch.Size([4096])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.10.mlp.c_proj.weight   , torch.Size([1024, 4096])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.10.mlp.c_proj.bias     , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.10.ln_2.weight         , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.10.ln_2.bias           , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.11.attn.in_proj_weight , torch.Size([3072, 1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.11.attn.in_proj_bias   , torch.Size([3072])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.11.attn.out_proj.weight, torch.Size([1024, 1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.11.attn.out_proj.bias  , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.11.ln_1.weight         , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.11.ln_1.bias           , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.11.mlp.c_fc.weight     , torch.Size([4096, 1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.11.mlp.c_fc.bias       , torch.Size([4096])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.11.mlp.c_proj.weight   , torch.Size([1024, 4096])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.11.mlp.c_proj.bias     , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.11.ln_2.weight         , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.11.ln_2.bias           , torch.Size([1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.12.attn.in_proj_weight , torch.Size([3072, 1024])
+[17:24:41.690] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.12.attn.in_proj_bias   , torch.Size([3072])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.12.attn.out_proj.weight, torch.Size([1024, 1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.12.attn.out_proj.bias  , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.12.ln_1.weight         , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.12.ln_1.bias           , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.12.mlp.c_fc.weight     , torch.Size([4096, 1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.12.mlp.c_fc.bias       , torch.Size([4096])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.12.mlp.c_proj.weight   , torch.Size([1024, 4096])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.12.mlp.c_proj.bias     , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.12.ln_2.weight         , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.12.ln_2.bias           , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.13.attn.in_proj_weight , torch.Size([3072, 1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.13.attn.in_proj_bias   , torch.Size([3072])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.13.attn.out_proj.weight, torch.Size([1024, 1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.13.attn.out_proj.bias  , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.13.ln_1.weight         , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.13.ln_1.bias           , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.13.mlp.c_fc.weight     , torch.Size([4096, 1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.13.mlp.c_fc.bias       , torch.Size([4096])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.13.mlp.c_proj.weight   , torch.Size([1024, 4096])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.13.mlp.c_proj.bias     , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.13.ln_2.weight         , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.13.ln_2.bias           , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.14.attn.in_proj_weight , torch.Size([3072, 1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.14.attn.in_proj_bias   , torch.Size([3072])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.14.attn.out_proj.weight, torch.Size([1024, 1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.14.attn.out_proj.bias  , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.14.ln_1.weight         , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.14.ln_1.bias           , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.14.mlp.c_fc.weight     , torch.Size([4096, 1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.14.mlp.c_fc.bias       , torch.Size([4096])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.14.mlp.c_proj.weight   , torch.Size([1024, 4096])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.14.mlp.c_proj.bias     , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.14.ln_2.weight         , torch.Size([1024])
+[17:24:41.691] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.14.ln_2.bias           , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.15.attn.in_proj_weight , torch.Size([3072, 1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.15.attn.in_proj_bias   , torch.Size([3072])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.15.attn.out_proj.weight, torch.Size([1024, 1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.15.attn.out_proj.bias  , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.15.ln_1.weight         , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.15.ln_1.bias           , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.15.mlp.c_fc.weight     , torch.Size([4096, 1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.15.mlp.c_fc.bias       , torch.Size([4096])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.15.mlp.c_proj.weight   , torch.Size([1024, 4096])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.15.mlp.c_proj.bias     , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.15.ln_2.weight         , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.15.ln_2.bias           , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.16.attn.in_proj_weight , torch.Size([3072, 1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.16.attn.in_proj_bias   , torch.Size([3072])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.16.attn.out_proj.weight, torch.Size([1024, 1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.16.attn.out_proj.bias  , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.16.ln_1.weight         , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.16.ln_1.bias           , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.16.mlp.c_fc.weight     , torch.Size([4096, 1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.16.mlp.c_fc.bias       , torch.Size([4096])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.16.mlp.c_proj.weight   , torch.Size([1024, 4096])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.16.mlp.c_proj.bias     , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.16.ln_2.weight         , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.16.ln_2.bias           , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.17.attn.in_proj_weight , torch.Size([3072, 1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.17.attn.in_proj_bias   , torch.Size([3072])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.17.attn.out_proj.weight, torch.Size([1024, 1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.17.attn.out_proj.bias  , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.17.ln_1.weight         , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.17.ln_1.bias           , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.17.mlp.c_fc.weight     , torch.Size([4096, 1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.17.mlp.c_fc.bias       , torch.Size([4096])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.17.mlp.c_proj.weight   , torch.Size([1024, 4096])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.17.mlp.c_proj.bias     , torch.Size([1024])
+[17:24:41.692] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.17.ln_2.weight         , torch.Size([1024])
+[17:24:41.693] p.requires_grad: False, param: module.vision_encoder.transformer.resblocks.17.ln_2.bias           , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.18.attn.in_proj_weight , torch.Size([3072, 1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.18.attn.in_proj_bias   , torch.Size([3072])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.18.attn.out_proj.weight, torch.Size([1024, 1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.18.attn.out_proj.bias  , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.18.ln_1.weight         , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.18.ln_1.bias           , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.18.mlp.c_fc.weight     , torch.Size([4096, 1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.18.mlp.c_fc.bias       , torch.Size([4096])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.18.mlp.c_proj.weight   , torch.Size([1024, 4096])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.18.mlp.c_proj.bias     , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.18.ln_2.weight         , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.18.ln_2.bias           , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.19.attn.in_proj_weight , torch.Size([3072, 1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.19.attn.in_proj_bias   , torch.Size([3072])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.19.attn.out_proj.weight, torch.Size([1024, 1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.19.attn.out_proj.bias  , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.19.ln_1.weight         , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.19.ln_1.bias           , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.19.mlp.c_fc.weight     , torch.Size([4096, 1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.19.mlp.c_fc.bias       , torch.Size([4096])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.19.mlp.c_proj.weight   , torch.Size([1024, 4096])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.19.mlp.c_proj.bias     , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.19.ln_2.weight         , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.19.ln_2.bias           , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.20.attn.in_proj_weight , torch.Size([3072, 1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.20.attn.in_proj_bias   , torch.Size([3072])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.20.attn.out_proj.weight, torch.Size([1024, 1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.20.attn.out_proj.bias  , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.20.ln_1.weight         , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.20.ln_1.bias           , torch.Size([1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.20.mlp.c_fc.weight     , torch.Size([4096, 1024])
+[17:24:41.693] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.20.mlp.c_fc.bias       , torch.Size([4096])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.20.mlp.c_proj.weight   , torch.Size([1024, 4096])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.20.mlp.c_proj.bias     , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.20.ln_2.weight         , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.20.ln_2.bias           , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.21.attn.in_proj_weight , torch.Size([3072, 1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.21.attn.in_proj_bias   , torch.Size([3072])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.21.attn.out_proj.weight, torch.Size([1024, 1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.21.attn.out_proj.bias  , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.21.ln_1.weight         , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.21.ln_1.bias           , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.21.mlp.c_fc.weight     , torch.Size([4096, 1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.21.mlp.c_fc.bias       , torch.Size([4096])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.21.mlp.c_proj.weight   , torch.Size([1024, 4096])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.21.mlp.c_proj.bias     , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.21.ln_2.weight         , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.21.ln_2.bias           , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.22.attn.in_proj_weight , torch.Size([3072, 1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.22.attn.in_proj_bias   , torch.Size([3072])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.22.attn.out_proj.weight, torch.Size([1024, 1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.22.attn.out_proj.bias  , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.22.ln_1.weight         , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.22.ln_1.bias           , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.22.mlp.c_fc.weight     , torch.Size([4096, 1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.22.mlp.c_fc.bias       , torch.Size([4096])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.22.mlp.c_proj.weight   , torch.Size([1024, 4096])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.22.mlp.c_proj.bias     , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.22.ln_2.weight         , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.22.ln_2.bias           , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.23.attn.in_proj_weight , torch.Size([3072, 1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.23.attn.in_proj_bias   , torch.Size([3072])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.23.attn.out_proj.weight, torch.Size([1024, 1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.23.attn.out_proj.bias  , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.23.ln_1.weight         , torch.Size([1024])
+[17:24:41.694] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.23.ln_1.bias           , torch.Size([1024])
+[17:24:41.695] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.23.mlp.c_fc.weight     , torch.Size([4096, 1024])
+[17:24:41.695] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.23.mlp.c_fc.bias       , torch.Size([4096])
+[17:24:41.695] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.23.mlp.c_proj.weight   , torch.Size([1024, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.23.mlp.c_proj.bias     , torch.Size([1024])
+[17:24:41.695] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.23.ln_2.weight         , torch.Size([1024])
+[17:24:41.695] p.requires_grad: True , param: module.vision_encoder.transformer.resblocks.23.ln_2.bias           , torch.Size([1024])
+[17:24:41.695] p.requires_grad: True , param: module.vision_encoder.ln_post.weight                               , torch.Size([1024])
+[17:24:41.695] p.requires_grad: True , param: module.vision_encoder.ln_post.bias                                 , torch.Size([1024])
+[17:24:41.695] p.requires_grad: True , param: module.vision_encoder.proj.weight                                  , torch.Size([4096, 1024])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.tok_embeddings.weight                      , torch.Size([32002, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.0.attention.wq.weight               , torch.Size([4096, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.0.attention.wk.weight               , torch.Size([4096, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.0.attention.wv.weight               , torch.Size([4096, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.0.attention.wo.weight               , torch.Size([4096, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.0.feed_forward.w1.weight            , torch.Size([11008, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.0.feed_forward.w2.weight            , torch.Size([4096, 11008])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.0.feed_forward.w3.weight            , torch.Size([11008, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.0.attention_norm.weight             , torch.Size([4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.0.ffn_norm.weight                   , torch.Size([4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.1.attention.wq.weight               , torch.Size([4096, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.1.attention.wk.weight               , torch.Size([4096, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.1.attention.wv.weight               , torch.Size([4096, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.1.attention.wo.weight               , torch.Size([4096, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.1.feed_forward.w1.weight            , torch.Size([11008, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.1.feed_forward.w2.weight            , torch.Size([4096, 11008])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.1.feed_forward.w3.weight            , torch.Size([11008, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.1.attention_norm.weight             , torch.Size([4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.1.ffn_norm.weight                   , torch.Size([4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.2.attention.wq.weight               , torch.Size([4096, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.2.attention.wk.weight               , torch.Size([4096, 4096])
+[17:24:41.695] p.requires_grad: True , param: module.language_decoder.layers.2.attention.wv.weight               , torch.Size([4096, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.2.attention.wo.weight               , torch.Size([4096, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.2.feed_forward.w1.weight            , torch.Size([11008, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.2.feed_forward.w2.weight            , torch.Size([4096, 11008])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.2.feed_forward.w3.weight            , torch.Size([11008, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.2.attention_norm.weight             , torch.Size([4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.2.ffn_norm.weight                   , torch.Size([4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.3.attention.wq.weight               , torch.Size([4096, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.3.attention.wk.weight               , torch.Size([4096, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.3.attention.wv.weight               , torch.Size([4096, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.3.attention.wo.weight               , torch.Size([4096, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.3.feed_forward.w1.weight            , torch.Size([11008, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.3.feed_forward.w2.weight            , torch.Size([4096, 11008])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.3.feed_forward.w3.weight            , torch.Size([11008, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.3.attention_norm.weight             , torch.Size([4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.3.ffn_norm.weight                   , torch.Size([4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.4.attention.wq.weight               , torch.Size([4096, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.4.attention.wk.weight               , torch.Size([4096, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.4.attention.wv.weight               , torch.Size([4096, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.4.attention.wo.weight               , torch.Size([4096, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.4.feed_forward.w1.weight            , torch.Size([11008, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.4.feed_forward.w2.weight            , torch.Size([4096, 11008])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.4.feed_forward.w3.weight            , torch.Size([11008, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.4.attention_norm.weight             , torch.Size([4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.4.ffn_norm.weight                   , torch.Size([4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.5.attention.wq.weight               , torch.Size([4096, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.5.attention.wk.weight               , torch.Size([4096, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.5.attention.wv.weight               , torch.Size([4096, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.5.attention.wo.weight               , torch.Size([4096, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.5.feed_forward.w1.weight            , torch.Size([11008, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.5.feed_forward.w2.weight            , torch.Size([4096, 11008])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.5.feed_forward.w3.weight            , torch.Size([11008, 4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.5.attention_norm.weight             , torch.Size([4096])
+[17:24:41.696] p.requires_grad: True , param: module.language_decoder.layers.5.ffn_norm.weight                   , torch.Size([4096])
+[17:24:41.697] p.requires_grad: True , param: module.language_decoder.norm.weight                                , torch.Size([4096])
+[17:24:41.697] p.requires_grad: True , param: module.language_decoder.output.weight                              , torch.Size([32002, 4096])
+[17:24:41.700] AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.98)
+    capturable: False
+    differentiable: False
+    eps: 1e-06
+    foreach: None
+    fused: True
+    lr: 1e-05
+    maximize: False
+    weight_decay: 0.1
+
+Parameter Group 1
+    amsgrad: False
+    betas: (0.9, 0.98)
+    capturable: False
+    differentiable: False
+    eps: 1e-06
+    foreach: None
+    fused: True
+    lr: 1e-05
+    maximize: False
+    weight_decay: 0.0
+)
+[17:24:41.701] register a hook to train the delimiter token $ in 'language_decoder.tok_embeddings'(token ids: {32000: '<|image|>'})
+[17:24:41.701] total training steps: 21360
+   epochs: 3
+   dataloader length: 7120 iters or 7120 steps in each epoch
+   gradient accumulation steps: 1
+   warmup steps: 2000 w/ ratio 0.20%
+   total batch size: 512
+   ckpt save interval: 20000
+   group size per batch merge: 1
+   grad clip: 0.0
+[17:24:41.703] saving checkpoint to /root/checkpoints/x/0.0.1.g3m.slm1b.llama2/ckpt_00_0000000.pth
+[17:25:06.109] epoch: 01  step: 00000001  lr: 0.0000000  loss: 12.0299253  loss_objs: 12.0299253 data time: 14.15089s  batch time: 19.96193s  warmup step: 00001
+[17:26:34.544] epoch: 01  step: 00000100  lr: 0.0000005  loss:  6.5658703  loss_objs:  6.5658703 data time:  0.00034s  batch time:  0.89820s  warmup step: 00100
+[17:28:04.667] epoch: 01  step: 00000200  lr: 0.0000010  loss:  4.0401869  loss_objs:  4.0401869 data time:  0.00025s  batch time:  0.90314s  warmup step: 00200
+[17:29:34.341] epoch: 01  step: 00000300  lr: 0.0000015  loss:  3.0809896  loss_objs:  3.0809896 data time:  0.00026s  batch time:  0.89295s  warmup step: 00300
+[17:31:03.736] epoch: 01  step: 00000400  lr: 0.0000020  loss:  2.6848841  loss_objs:  2.6848841 data time:  0.00027s  batch time:  0.89415s  warmup step: 00400
+[17:32:33.488] epoch: 01  step: 00000500  lr: 0.0000025  loss:  2.3494191  loss_objs:  2.3494191 data time:  0.00022s  batch time:  0.90079s  warmup step: 00500
+[17:34:02.970] epoch: 01  step: 00000600  lr: 0.0000030  loss:  2.1783819  loss_objs:  2.1783819 data time:  0.00033s  batch time:  0.89217s  warmup step: 00600
+[17:35:32.473] epoch: 01  step: 00000700  lr: 0.0000035  loss:  1.8222746  loss_objs:  1.8222746 data time:  0.00023s  batch time:  0.89715s  warmup step: 00700
+[17:37:02.439] epoch: 01  step: 00000800  lr: 0.0000040  loss:  1.8553606  loss_objs:  1.8553606 data time:  0.00024s  batch time:  0.90363s  warmup step: 00800
+[17:38:32.930] epoch: 01  step: 00000900  lr: 0.0000045  loss:  1.5411698  loss_objs:  1.5411698 data time:  0.00054s  batch time:  0.90532s  warmup step: 00900
+[17:40:03.496] epoch: 01  step: 00001000  lr: 0.0000050  loss:  1.8904312  loss_objs:  1.8904312 data time:  0.00024s  batch time:  0.90408s  warmup step: 01000
+[17:41:34.140] epoch: 01  step: 00001100  lr: 0.0000055  loss:  1.8157187  loss_objs:  1.8157187 data time:  0.00025s  batch time:  0.90627s  warmup step: 01100
+[17:43:04.770] epoch: 01  step: 00001200  lr: 0.0000060  loss:  1.6540905  loss_objs:  1.6540905 data time:  0.00026s  batch time:  0.90568s  warmup step: 01200
+[17:44:35.349] epoch: 01  step: 00001300  lr: 0.0000065  loss:  1.8055247  loss_objs:  1.8055247 data time:  0.00024s  batch time:  0.90547s  warmup step: 01300
+[17:46:05.945] epoch: 01  step: 00001400  lr: 0.0000070  loss:  1.3587197  loss_objs:  1.3587197 data time:  0.00026s  batch time:  0.90558s  warmup step: 01400
+[17:47:36.518] epoch: 01  step: 00001500  lr: 0.0000075  loss:  1.4722713  loss_objs:  1.4722713 data time:  0.00024s  batch time:  0.90570s  warmup step: 01500
+[17:49:07.109] epoch: 01  step: 00001600  lr: 0.0000080  loss:  1.6505680  loss_objs:  1.6505680 data time:  0.00022s  batch time:  0.90751s  warmup step: 01600
+[17:50:37.669] epoch: 01  step: 00001700  lr: 0.0000085  loss:  1.7365538  loss_objs:  1.7365538 data time:  0.00023s  batch time:  0.90558s  warmup step: 01700
+[17:52:07.327] epoch: 01  step: 00001800  lr: 0.0000090  loss:  1.7888540  loss_objs:  1.7888540 data time:  0.00021s  batch time:  0.89359s  warmup step: 01800
+[17:53:36.681] epoch: 01  step: 00001900  lr: 0.0000095  loss:  1.5911101  loss_objs:  1.5911101 data time:  0.00020s  batch time:  0.89451s  warmup step: 01900
+[17:55:06.026] epoch: 01  step: 00002000  lr: 0.0000100  loss:  1.3652903  loss_objs:  1.3652903 data time:  0.00023s  batch time:  0.89429s  warmup step: 02000
+[17:56:35.623] epoch: 01  step: 00002100  lr: 0.0000100  loss:  1.3740420  loss_objs:  1.3740420 data time:  0.00033s  batch time:  0.89804s  
+[17:58:05.626] epoch: 01  step: 00002200  lr: 0.0000100  loss:  1.4501417  loss_objs:  1.4501417 data time:  0.00023s  batch time:  0.89531s  
+[17:59:35.047] epoch: 01  step: 00002300  lr: 0.0000100  loss:  1.6662097  loss_objs:  1.6662097 data time:  0.00022s  batch time:  0.89575s  
+[18:01:04.717] epoch: 01  step: 00002400  lr: 0.0000100  loss:  1.5154253  loss_objs:  1.5154253 data time:  0.00024s  batch time:  0.89961s  
+[18:02:34.938] epoch: 01  step: 00002500  lr: 0.0000100  loss:  1.5824142  loss_objs:  1.5824142 data time:  0.00021s  batch time:  0.90279s  
+[18:04:05.442] epoch: 01  step: 00002600  lr: 0.0000100  loss:  1.5702918  loss_objs:  1.5702918 data time:  0.00021s  batch time:  0.90557s  
+[18:05:35.031] epoch: 01  step: 00002700  lr: 0.0000100  loss:  1.0652589  loss_objs:  1.0652589 data time:  0.00022s  batch time:  0.89153s  
+[18:07:04.396] epoch: 01  step: 00002800  lr: 0.0000100  loss:  1.3646654  loss_objs:  1.3646654 data time:  0.00022s  batch time:  0.89273s  
+[18:08:33.743] epoch: 01  step: 00002900  lr: 0.0000099  loss:  1.4670388  loss_objs:  1.4670388 data time:  0.00025s  batch time:  0.89457s  
+[18:10:03.385] epoch: 01  step: 00003000  lr: 0.0000099  loss:  1.3673536  loss_objs:  1.3673536 data time:  0.00021s  batch time:  0.89747s  
+[18:11:33.578] epoch: 01  step: 00003100  lr: 0.0000099  loss:  1.2113326  loss_objs:  1.2113326 data time:  0.00024s  batch time:  0.90180s  
+[18:13:04.057] epoch: 01  step: 00003200  lr: 0.0000099  loss:  1.2193073  loss_objs:  1.2193073 data time:  0.00025s  batch time:  0.90341s  
+[18:14:34.674] epoch: 01  step: 00003300  lr: 0.0000099  loss:  1.4551629  loss_objs:  1.4551629 data time:  0.00024s  batch time:  0.90826s  
+[18:16:04.422] epoch: 01  step: 00003400  lr: 0.0000099  loss:  1.3787978  loss_objs:  1.3787978 data time:  0.00021s  batch time:  0.89091s  
+[18:17:33.888] epoch: 01  step: 00003500  lr: 0.0000099  loss:  1.2823181  loss_objs:  1.2823181 data time:  0.00023s  batch time:  0.89624s  
+[18:19:03.787] epoch: 01  step: 00003600  lr: 0.0000098  loss:  1.4119190  loss_objs:  1.4119190 data time:  0.00022s  batch time:  0.90303s  
+[18:20:34.207] epoch: 01  step: 00003700  lr: 0.0000098  loss:  1.3839120  loss_objs:  1.3839120 data time:  0.00023s  batch time:  0.90429s  
+[18:22:04.843] epoch: 01  step: 00003800  lr: 0.0000098  loss:  1.2288141  loss_objs:  1.2288141 data time:  0.00021s  batch time:  0.90746s  
+[18:23:34.443] epoch: 01  step: 00003900  lr: 0.0000098  loss:  1.4263967  loss_objs:  1.4263967 data time:  0.00023s  batch time:  0.89360s  
+[18:25:03.952] epoch: 01  step: 00004000  lr: 0.0000097  loss:  1.2399586  loss_objs:  1.2399586 data time:  0.00022s  batch time:  0.89772s  
+[18:26:33.451] epoch: 01  step: 00004100  lr: 0.0000097  loss:  1.5661856  loss_objs:  1.5661856 data time:  0.00023s  batch time:  0.89541s  
+[18:28:02.878] epoch: 01  step: 00004200  lr: 0.0000097  loss:  1.6552007  loss_objs:  1.6552007 data time:  0.00034s  batch time:  0.89434s  
+[18:29:32.724] epoch: 01  step: 00004300  lr: 0.0000097  loss:  1.2126652  loss_objs:  1.2126652 data time:  0.00021s  batch time:  0.90092s  
+[18:31:03.090] epoch: 01  step: 00004400  lr: 0.0000096  loss:  1.6582203  loss_objs:  1.6582203 data time:  0.00023s  batch time:  0.90607s  
+[18:32:33.600] epoch: 01  step: 00004500  lr: 0.0000096  loss:  1.0857687  loss_objs:  1.0857687 data time:  0.00024s  batch time:  0.90525s  
+[18:34:04.229] epoch: 01  step: 00004600  lr: 0.0000096  loss:  1.5638733  loss_objs:  1.5638733 data time:  0.00023s  batch time:  0.90734s  
+[18:35:34.815] epoch: 01  step: 00004700  lr: 0.0000095  loss:  1.2206532  loss_objs:  1.2206532 data time:  0.00021s  batch time:  0.90414s  
+[18:37:05.320] epoch: 01  step: 00004800  lr: 0.0000095  loss:  1.1937965  loss_objs:  1.1937965 data time:  0.00022s  batch time:  0.90585s  
+[18:38:35.895] epoch: 01  step: 00004900  lr: 0.0000095  loss:  1.4558828  loss_objs:  1.4558828 data time:  0.00024s  batch time:  0.90701s  
+[18:40:06.461] epoch: 01  step: 00005000  lr: 0.0000094  loss:  1.1921248  loss_objs:  1.1921248 data time:  0.00022s  batch time:  0.90465s  
+[18:41:36.957] epoch: 01  step: 00005100  lr: 0.0000094  loss:  1.4007832  loss_objs:  1.4007832 data time:  0.00025s  batch time:  0.90858s  
+[18:43:07.480] epoch: 01  step: 00005200  lr: 0.0000093  loss:  1.1999869  loss_objs:  1.1999869 data time:  0.00026s  batch time:  0.90401s  
+[18:44:38.211] epoch: 01  step: 00005300  lr: 0.0000093  loss:  2.6203103  loss_objs:  2.6203103 data time:  0.00024s  batch time:  0.91112s  
+[18:46:09.019] epoch: 01  step: 00005400  lr: 0.0000093  loss:  2.2438362  loss_objs:  2.2438362 data time:  0.00024s  batch time:  0.90970s  
+[18:47:39.810] epoch: 01  step: 00005500  lr: 0.0000092  loss:  1.9366913  loss_objs:  1.9366913 data time:  0.00022s  batch time:  0.90675s  
+[18:49:10.584] epoch: 01  step: 00005600  lr: 0.0000092  loss:  2.1588321  loss_objs:  2.1588321 data time:  0.00023s  batch time:  0.90702s  
+[18:50:41.326] epoch: 01  step: 00005700  lr: 0.0000091  loss:  2.1411111  loss_objs:  2.1411111 data time:  0.00021s  batch time:  0.90800s  
+[18:52:12.074] epoch: 01  step: 00005800  lr: 0.0000091  loss:  2.0269210  loss_objs:  2.0269210 data time:  0.00023s  batch time:  0.90881s  
+[18:53:42.821] epoch: 01  step: 00005900  lr: 0.0000090  loss:  1.8984290  loss_objs:  1.8984290 data time:  0.00022s  batch time:  0.90667s  
+[18:55:12.746] epoch: 01  step: 00006000  lr: 0.0000090  loss:  2.1903169  loss_objs:  2.1903169 data time:  0.00023s  batch time:  0.89812s  
+[18:56:42.395] epoch: 01  step: 00006100  lr: 0.0000089  loss:  2.1938198  loss_objs:  2.1938198 data time:  0.00022s  batch time:  0.89805s  
+[18:58:12.517] epoch: 01  step: 00006200  lr: 0.0000089  loss:  1.9038872  loss_objs:  1.9038872 data time:  0.00022s  batch time:  0.90367s  
+[18:59:42.452] epoch: 01  step: 00006300  lr: 0.0000088  loss:  2.0278714  loss_objs:  2.0278714 data time:  0.00030s  batch time:  0.89665s  
+[19:01:12.138] epoch: 01  step: 00006400  lr: 0.0000088  loss:  2.1749024  loss_objs:  2.1749024 data time:  0.00014s  batch time:  0.89987s  
+[19:02:42.212] epoch: 01  step: 00006500  lr: 0.0000087  loss:  1.8066479  loss_objs:  1.8066479 data time:  0.00025s  batch time:  0.90243s  
+[19:04:12.325] epoch: 01  step: 00006600  lr: 0.0000087  loss:  1.8590453  loss_objs:  1.8590453 data time:  0.00022s  batch time:  0.89455s  
+[19:05:41.973] epoch: 01  step: 00006700  lr: 0.0000086  loss:  2.2103822  loss_objs:  2.2103822 data time:  0.00016s  batch time:  0.89788s  
+[19:07:12.059] epoch: 01  step: 00006800  lr: 0.0000086  loss:  1.7930534  loss_objs:  1.7930534 data time:  0.00022s  batch time:  0.90225s  
+[19:08:42.909] epoch: 01  step: 00006900  lr: 0.0000085  loss:  2.1534760  loss_objs:  2.1534760 data time:  0.00022s  batch time:  0.91615s  
+[19:10:14.077] epoch: 01  step: 00007000  lr: 0.0000084  loss:  1.5030371  loss_objs:  1.5030371 data time:  0.00023s  batch time:  0.90949s  
+[19:11:45.801] epoch: 01  step: 00007100  lr: 0.0000084  loss:  1.8011595  loss_objs:  1.8011595 data time:  0.00022s  batch time:  0.92415s  
+[19:12:02.373] epoch: 01  step: 00007120  lr: 0.0000084  loss:  2.0931041  loss_objs:  2.0931041 data time:  0.00016s  batch time:  0.28303s  
+[19:12:49.272] epoch: 02  step: 00007121  lr: 0.0000084  loss:  1.5956017  loss_objs:  1.5956017 data time: 45.75934s  batch time: 46.59918s  
+[19:14:18.284] epoch: 02  step: 00007220  lr: 0.0000083  loss:  1.6002368  loss_objs:  1.6002368 data time:  0.00022s  batch time:  0.90303s  
+[19:15:48.824] epoch: 02  step: 00007320  lr: 0.0000083  loss:  1.3282169  loss_objs:  1.3282169 data time:  0.00027s  batch time:  0.90675s  
+[19:17:19.455] epoch: 02  step: 00007420  lr: 0.0000082  loss:  1.5897744  loss_objs:  1.5897744 data time:  0.00022s  batch time:  0.90662s  
+[19:18:50.166] epoch: 02  step: 00007520  lr: 0.0000081  loss:  1.2741245  loss_objs:  1.2741245 data time:  0.00021s  batch time:  0.90601s  
+[19:20:20.808] epoch: 02  step: 00007620  lr: 0.0000081  loss:  1.3709346  loss_objs:  1.3709346 data time:  0.00024s  batch time:  0.90807s  
+[19:21:51.463] epoch: 02  step: 00007720  lr: 0.0000080  loss:  1.1952890  loss_objs:  1.1952890 data time:  0.00024s  batch time:  0.90614s  
+[19:23:22.143] epoch: 02  step: 00007820  lr: 0.0000079  loss:  1.4278506  loss_objs:  1.4278506 data time:  0.00028s  batch time:  0.90604s  
+[19:24:52.794] epoch: 02  step: 00007920  lr: 0.0000079  loss:  1.4787170  loss_objs:  1.4787170 data time:  0.00030s  batch time:  0.90734s  
+[19:26:23.436] epoch: 02  step: 00008020  lr: 0.0000078  loss:  1.1965084  loss_objs:  1.1965084 data time:  0.00022s  batch time:  0.90557s  
+[19:27:54.075] epoch: 02  step: 00008120  lr: 0.0000077  loss:  1.1404088  loss_objs:  1.1404088 data time:  0.00015s  batch time:  0.90628s  
+[19:29:24.740] epoch: 02  step: 00008220  lr: 0.0000077  loss:  1.1811144  loss_objs:  1.1811144 data time:  0.00022s  batch time:  0.90455s  
+[19:30:55.329] epoch: 02  step: 00008320  lr: 0.0000076  loss:  1.3211246  loss_objs:  1.3211246 data time:  0.00024s  batch time:  0.90406s  
+[19:32:25.208] epoch: 02  step: 00008420  lr: 0.0000075  loss:  1.1306826  loss_objs:  1.1306826 data time:  0.00025s  batch time:  0.89525s  
+[19:33:54.786] epoch: 02  step: 00008520  lr: 0.0000075  loss:  1.2759553  loss_objs:  1.2759553 data time:  0.00025s  batch time:  0.89779s  
+[19:35:24.836] epoch: 02  step: 00008620  lr: 0.0000074  loss:  1.1149247  loss_objs:  1.1149247 data time:  0.00016s  batch time:  0.90450s  
+[19:36:55.507] epoch: 02  step: 00008720  lr: 0.0000073  loss:  1.3283046  loss_objs:  1.3283046 data time:  0.00022s  batch time:  0.90737s  
+[19:38:25.513] epoch: 02  step: 00008820  lr: 0.0000072  loss:  1.4252365  loss_objs:  1.4252365 data time:  0.00021s  batch time:  0.89377s  
+[19:39:55.043] epoch: 02  step: 00008920  lr: 0.0000072  loss:  1.2368404  loss_objs:  1.2368404 data time:  0.00022s  batch time:  0.89867s  
+[19:41:24.727] epoch: 02  step: 00009020  lr: 0.0000071  loss:  1.3253973  loss_objs:  1.3253973 data time:  0.00021s  batch time:  0.89261s  
+[19:42:54.180] epoch: 02  step: 00009120  lr: 0.0000070  loss:  1.3343343  loss_objs:  1.3343343 data time:  0.00023s  batch time:  0.89436s  
+[19:44:23.990] epoch: 02  step: 00009220  lr: 0.0000069  loss:  1.3230042  loss_objs:  1.3230042 data time:  0.00029s  batch time:  0.90132s  
+[19:45:54.399] epoch: 02  step: 00009320  lr: 0.0000069  loss:  1.4176185  loss_objs:  1.4176185 data time:  0.00024s  batch time:  0.90274s  
+[19:47:25.101] epoch: 02  step: 00009420  lr: 0.0000068  loss:  1.2862327  loss_objs:  1.2862327 data time:  0.00023s  batch time:  0.90819s  
+[19:48:55.830] epoch: 02  step: 00009520  lr: 0.0000067  loss:  1.2885195  loss_objs:  1.2885195 data time:  0.00022s  batch time:  0.90894s  
+[19:50:26.501] epoch: 02  step: 00009620  lr: 0.0000066  loss:  1.0676584  loss_objs:  1.0676584 data time:  0.00024s  batch time:  0.90666s  
+[19:51:57.198] epoch: 02  step: 00009720  lr: 0.0000066  loss:  1.2545029  loss_objs:  1.2545029 data time:  0.00023s  batch time:  0.90881s  
+[19:53:27.935] epoch: 02  step: 00009820  lr: 0.0000065  loss:  1.4058609  loss_objs:  1.4058609 data time:  0.00023s  batch time:  0.91207s  
+[19:54:58.721] epoch: 02  step: 00009920  lr: 0.0000064  loss:  1.2566954  loss_objs:  1.2566954 data time:  0.00025s  batch time:  0.90701s  
+[19:56:29.489] epoch: 02  step: 00010020  lr: 0.0000063  loss:  1.3262556  loss_objs:  1.3262556 data time:  0.00022s  batch time:  0.90540s  
+[19:58:00.204] epoch: 02  step: 00010120  lr: 0.0000063  loss:  1.2856313  loss_objs:  1.2856313 data time:  0.00022s  batch time:  0.91155s  
+[19:59:30.979] epoch: 02  step: 00010220  lr: 0.0000062  loss:  1.3701581  loss_objs:  1.3701581 data time:  0.00023s  batch time:  0.90600s  
+[20:01:01.367] epoch: 02  step: 00010320  lr: 0.0000061  loss:  1.2179493  loss_objs:  1.2179493 data time:  0.00021s  batch time:  0.89823s  
+[20:02:30.963] epoch: 02  step: 00010420  lr: 0.0000060  loss:  1.1474215  loss_objs:  1.1474215 data time:  0.00022s  batch time:  0.89550s  
+[20:04:00.771] epoch: 02  step: 00010520  lr: 0.0000059  loss:  1.3638395  loss_objs:  1.3638395 data time:  0.00023s  batch time:  0.90484s  
+[20:05:31.225] epoch: 02  step: 00010620  lr: 0.0000059  loss:  1.0718031  loss_objs:  1.0718031 data time:  0.00026s  batch time:  0.90801s  
+[20:07:02.008] epoch: 02  step: 00010720  lr: 0.0000058  loss:  1.0331300  loss_objs:  1.0331300 data time:  0.00026s  batch time:  0.90540s  
+[20:08:32.645] epoch: 02  step: 00010820  lr: 0.0000057  loss:  1.4911387  loss_objs:  1.4911387 data time:  0.00026s  batch time:  0.90691s  
+[20:10:03.361] epoch: 02  step: 00010920  lr: 0.0000056  loss:  1.4376618  loss_objs:  1.4376618 data time:  0.00023s  batch time:  0.90961s  
+[20:11:34.081] epoch: 02  step: 00011020  lr: 0.0000055  loss:  1.1145082  loss_objs:  1.1145082 data time:  0.00022s  batch time:  0.90685s  
+[20:13:04.750] epoch: 02  step: 00011120  lr: 0.0000055  loss:  1.2927452  loss_objs:  1.2927452 data time:  0.00022s  batch time:  0.90619s  
+[20:14:35.387] epoch: 02  step: 00011220  lr: 0.0000054  loss:  1.4242029  loss_objs:  1.4242029 data time:  0.00027s  batch time:  0.90725s  
+[20:16:06.115] epoch: 02  step: 00011320  lr: 0.0000053  loss:  1.2483168  loss_objs:  1.2483168 data time:  0.00030s  batch time:  0.90760s  
+[20:17:36.493] epoch: 02  step: 00011420  lr: 0.0000052  loss:  1.3287215  loss_objs:  1.3287215 data time:  0.00024s  batch time:  0.90659s  
+[20:19:06.128] epoch: 02  step: 00011520  lr: 0.0000051  loss:  1.1785675  loss_objs:  1.1785675 data time:  0.00025s  batch time:  0.89468s  
+[20:20:35.890] epoch: 02  step: 00011620  lr: 0.0000050  loss:  1.2262831  loss_objs:  1.2262831 data time:  0.00022s  batch time:  0.90244s  
+[20:22:06.288] epoch: 02  step: 00011720  lr: 0.0000050  loss:  1.0714273  loss_objs:  1.0714273 data time:  0.00022s  batch time:  0.90451s  
+[20:23:36.959] epoch: 02  step: 00011820  lr: 0.0000049  loss:  1.3353305  loss_objs:  1.3353305 data time:  0.00022s  batch time:  0.90710s  
+[20:25:07.674] epoch: 02  step: 00011920  lr: 0.0000048  loss:  1.1455346  loss_objs:  1.1455346 data time:  0.00023s  batch time:  0.90506s  
+[20:26:38.398] epoch: 02  step: 00012020  lr: 0.0000047  loss:  1.2631221  loss_objs:  1.2631221 data time:  0.00021s  batch time:  0.90789s  
+[20:28:09.150] epoch: 02  step: 00012120  lr: 0.0000046  loss:  1.2168248  loss_objs:  1.2168248 data time:  0.00025s  batch time:  0.90584s  
+[20:29:39.881] epoch: 02  step: 00012220  lr: 0.0000046  loss:  1.2495111  loss_objs:  1.2495111 data time:  0.00025s  batch time:  0.90766s  
+[20:31:10.579] epoch: 02  step: 00012320  lr: 0.0000045  loss:  1.2575250  loss_objs:  1.2575250 data time:  0.00021s  batch time:  0.90699s  
+[20:32:41.322] epoch: 02  step: 00012420  lr: 0.0000044  loss:  1.8113087  loss_objs:  1.8113087 data time:  0.00024s  batch time:  0.90906s  
+[20:34:11.725] epoch: 02  step: 00012520  lr: 0.0000043  loss:  1.8463802  loss_objs:  1.8463802 data time:  0.00022s  batch time:  0.89783s  
+[20:35:41.430] epoch: 02  step: 00012620  lr: 0.0000042  loss:  1.9820192  loss_objs:  1.9820192 data time:  0.00022s  batch time:  0.89764s  
+[20:37:11.102] epoch: 02  step: 00012720  lr: 0.0000042  loss:  1.4905741  loss_objs:  1.4905741 data time:  0.00021s  batch time:  0.89436s  
+[20:38:40.847] epoch: 02  step: 00012820  lr: 0.0000041  loss:  1.8447720  loss_objs:  1.8447720 data time:  0.00024s  batch time:  0.90033s  
+[20:40:10.744] epoch: 02  step: 00012920  lr: 0.0000040  loss:  1.9795682  loss_objs:  1.9795682 data time:  0.00021s  batch time:  0.89828s  
+[20:41:40.368] epoch: 02  step: 00013020  lr: 0.0000039  loss:  1.6982702  loss_objs:  1.6982702 data time:  0.00025s  batch time:  0.89748s  
+[20:43:10.318] epoch: 02  step: 00013120  lr: 0.0000038  loss:  1.9035828  loss_objs:  1.9035828 data time:  0.00023s  batch time:  0.90486s  
+[20:44:40.787] epoch: 02  step: 00013220  lr: 0.0000038  loss:  1.5456063  loss_objs:  1.5456063 data time:  0.00021s  batch time:  0.89926s  
+[20:46:10.414] epoch: 02  step: 00013320  lr: 0.0000037  loss:  2.0598261  loss_objs:  2.0598261 data time:  0.00023s  batch time:  0.89669s  
+[20:47:40.248] epoch: 02  step: 00013420  lr: 0.0000036  loss:  1.7663436  loss_objs:  1.7663436 data time:  0.00027s  batch time:  0.90026s  
+[20:49:10.336] epoch: 02  step: 00013520  lr: 0.0000035  loss:  1.5804316  loss_objs:  1.5804316 data time:  0.00020s  batch time:  0.89305s  
+[20:50:39.860] epoch: 02  step: 00013620  lr: 0.0000035  loss:  1.6899052  loss_objs:  1.6899052 data time:  0.00024s  batch time:  0.89353s  
+[20:52:09.444] epoch: 02  step: 00013720  lr: 0.0000034  loss:  1.7954128  loss_objs:  1.7954128 data time:  0.00025s  batch time:  0.89653s  
+[20:53:39.450] epoch: 02  step: 00013820  lr: 0.0000033  loss:  1.7269883  loss_objs:  1.7269883 data time:  0.00024s  batch time:  0.90184s  
+[20:55:10.000] epoch: 02  step: 00013920  lr: 0.0000032  loss:  1.9531323  loss_objs:  1.9531323 data time:  0.00015s  batch time:  0.90607s  
+[20:56:40.933] epoch: 02  step: 00014020  lr: 0.0000031  loss:  1.8407973  loss_objs:  1.8407973 data time:  0.00028s  batch time:  0.92234s  
+[20:58:13.285] epoch: 02  step: 00014120  lr: 0.0000031  loss:  1.8804878  loss_objs:  1.8804878 data time:  0.00023s  batch time:  0.92500s  
+[20:59:45.861] epoch: 02  step: 00014220  lr: 0.0000030  loss:  1.7513182  loss_objs:  1.7513182 data time:  0.00021s  batch time:  0.92218s  
+[21:00:02.449] epoch: 02  step: 00014240  lr: 0.0000030  loss:  1.3988130  loss_objs:  1.3988130 data time:  0.00017s  batch time:  0.28290s  
+[21:00:54.621] epoch: 03  step: 00014241  lr: 0.0000030  loss:  1.2497194  loss_objs:  1.2497194 data time: 51.01220s  batch time: 51.85526s  
+[21:02:23.763] epoch: 03  step: 00014340  lr: 0.0000029  loss:  1.2364819  loss_objs:  1.2364819 data time:  0.00031s  batch time:  0.90727s  
+[21:03:53.431] epoch: 03  step: 00014440  lr: 0.0000028  loss:  1.0177988  loss_objs:  1.0177988 data time:  0.00028s  batch time:  0.89426s  
+[21:05:23.005] epoch: 03  step: 00014540  lr: 0.0000028  loss:  1.2235975  loss_objs:  1.2235975 data time:  0.00026s  batch time:  0.89903s  
+[21:06:52.423] epoch: 03  step: 00014640  lr: 0.0000027  loss:  1.0040047  loss_objs:  1.0040047 data time:  0.00021s  batch time:  0.89215s  
+[21:08:21.933] epoch: 03  step: 00014740  lr: 0.0000026  loss:  1.2993777  loss_objs:  1.2993777 data time:  0.00028s  batch time:  0.89796s  
+[21:09:51.411] epoch: 03  step: 00014840  lr: 0.0000025  loss:  1.1280899  loss_objs:  1.1280899 data time:  0.00025s  batch time:  0.89631s  
+[21:11:20.932] epoch: 03  step: 00014940  lr: 0.0000025  loss:  1.3715061  loss_objs:  1.3715061 data time:  0.00040s  batch time:  0.89718s  
+[21:12:50.826] epoch: 03  step: 00015040  lr: 0.0000024  loss:  1.1677157  loss_objs:  1.1677157 data time:  0.00021s  batch time:  0.90249s  
+[21:14:21.236] epoch: 03  step: 00015140  lr: 0.0000023  loss:  1.1475729  loss_objs:  1.1475729 data time:  0.00024s  batch time:  0.90459s  
+[21:15:51.858] epoch: 03  step: 00015240  lr: 0.0000023  loss:  1.3874649  loss_objs:  1.3874649 data time:  0.00022s  batch time:  0.90713s  
+[21:17:22.480] epoch: 03  step: 00015340  lr: 0.0000022  loss:  1.1246421  loss_objs:  1.1246421 data time:  0.00029s  batch time:  0.90598s  
+[21:18:53.191] epoch: 03  step: 00015440  lr: 0.0000021  loss:  1.2509797  loss_objs:  1.2509797 data time:  0.00026s  batch time:  0.90725s  
+[21:20:23.793] epoch: 03  step: 00015540  lr: 0.0000021  loss:  1.1775949  loss_objs:  1.1775949 data time:  0.00024s  batch time:  0.90407s  
+[21:21:54.373] epoch: 03  step: 00015640  lr: 0.0000020  loss:  1.0858341  loss_objs:  1.0858341 data time:  0.00028s  batch time:  0.90736s  
+[21:23:24.973] epoch: 03  step: 00015740  lr: 0.0000019  loss:  1.1100196  loss_objs:  1.1100196 data time:  0.00021s  batch time:  0.90726s  
+[21:24:55.564] epoch: 03  step: 00015840  lr: 0.0000019  loss:  1.0754442  loss_objs:  1.0754442 data time:  0.00024s  batch time:  0.90523s  
+[21:26:26.179] epoch: 03  step: 00015940  lr: 0.0000018  loss:  1.0757611  loss_objs:  1.0757611 data time:  0.00023s  batch time:  0.90671s  
+[21:27:56.831] epoch: 03  step: 00016040  lr: 0.0000018  loss:  1.4233370  loss_objs:  1.4233370 data time:  0.00025s  batch time:  0.90884s  
+[21:29:27.496] epoch: 03  step: 00016140  lr: 0.0000017  loss:  1.1553165  loss_objs:  1.1553165 data time:  0.00028s  batch time:  0.90595s  
+[21:30:57.168] epoch: 03  step: 00016240  lr: 0.0000016  loss:  1.2258089  loss_objs:  1.2258089 data time:  0.00041s  batch time:  0.89322s  
+[21:32:26.662] epoch: 03  step: 00016340  lr: 0.0000016  loss:  1.3639028  loss_objs:  1.3639028 data time:  0.00033s  batch time:  0.89600s  
+[21:33:56.703] epoch: 03  step: 00016440  lr: 0.0000015  loss:  1.0967489  loss_objs:  1.0967489 data time:  0.00029s  batch time:  0.90410s  
+[21:35:27.283] epoch: 03  step: 00016540  lr: 0.0000015  loss:  1.0900589  loss_objs:  1.0900589 data time:  0.00022s  batch time:  0.90718s  
+[21:36:57.978] epoch: 03  step: 00016640  lr: 0.0000014  loss:  1.3480333  loss_objs:  1.3480333 data time:  0.00023s  batch time:  0.90591s  
+[21:38:28.716] epoch: 03  step: 00016740  lr: 0.0000013  loss:  1.2719756  loss_objs:  1.2719756 data time:  0.00024s  batch time:  0.90698s  
+[21:39:59.458] epoch: 03  step: 00016840  lr: 0.0000013  loss:  1.1873839  loss_objs:  1.1873839 data time:  0.00024s  batch time:  0.90761s  
+[21:41:29.847] epoch: 03  step: 00016940  lr: 0.0000012  loss:  1.1118772  loss_objs:  1.1118772 data time:  0.00027s  batch time:  0.89647s  
+[21:42:59.298] epoch: 03  step: 00017040  lr: 0.0000012  loss:  1.1414980  loss_objs:  1.1414980 data time:  0.00025s  batch time:  0.89313s  
+[21:44:28.935] epoch: 03  step: 00017140  lr: 0.0000011  loss:  1.0318234  loss_objs:  1.0318234 data time:  0.00023s  batch time:  0.89883s  
+[21:45:59.001] epoch: 03  step: 00017240  lr: 0.0000011  loss:  1.1001555  loss_objs:  1.1001555 data time:  0.00026s  batch time:  0.90171s  
+[21:47:29.485] epoch: 03  step: 00017340  lr: 0.0000010  loss:  1.1928095  loss_objs:  1.1928095 data time:  0.00021s  batch time:  0.90657s  
+[21:49:00.178] epoch: 03  step: 00017440  lr: 0.0000010  loss:  1.3360742  loss_objs:  1.3360742 data time:  0.00021s  batch time:  0.90702s  
+[21:50:30.824] epoch: 03  step: 00017540  lr: 0.0000009  loss:  1.0362327  loss_objs:  1.0362327 data time:  0.00024s  batch time:  0.90419s  
+[21:52:01.216] epoch: 03  step: 00017640  lr: 0.0000009  loss:  1.2039487  loss_objs:  1.2039487 data time:  0.00027s  batch time:  0.89471s  
+[21:53:30.692] epoch: 03  step: 00017740  lr: 0.0000008  loss:  1.3021431  loss_objs:  1.3021431 data time:  0.00025s  batch time:  0.89731s  
+[21:55:00.380] epoch: 03  step: 00017840  lr: 0.0000008  loss:  1.4914316  loss_objs:  1.4914316 data time:  0.00022s  batch time:  0.90172s  
+[21:56:30.571] epoch: 03  step: 00017940  lr: 0.0000008  loss:  1.1086215  loss_objs:  1.1086215 data time:  0.00025s  batch time:  0.90367s  
+[21:58:01.120] epoch: 03  step: 00018040  lr: 0.0000007  loss:  1.2115098  loss_objs:  1.2115098 data time:  0.00024s  batch time:  0.90643s  
+[21:59:31.777] epoch: 03  step: 00018140  lr: 0.0000007  loss:  1.0137093  loss_objs:  1.0137093 data time:  0.00022s  batch time:  0.90460s  
+[22:01:01.870] epoch: 03  step: 00018240  lr: 0.0000006  loss:  1.1564683  loss_objs:  1.1564683 data time:  0.00028s  batch time:  0.89594s  
+[22:02:31.307] epoch: 03  step: 00018340  lr: 0.0000006  loss:  1.1367120  loss_objs:  1.1367120 data time:  0.00028s  batch time:  0.89261s  
+[22:04:00.837] epoch: 03  step: 00018440  lr: 0.0000006  loss:  1.2821174  loss_objs:  1.2821174 data time:  0.00029s  batch time:  0.89502s  
+[22:05:30.439] epoch: 03  step: 00018540  lr: 0.0000005  loss:  1.1249458  loss_objs:  1.1249458 data time:  0.00024s  batch time:  0.89675s  
+[22:07:00.528] epoch: 03  step: 00018640  lr: 0.0000005  loss:  1.3911389  loss_objs:  1.3911389 data time:  0.00022s  batch time:  0.90387s  
+[22:08:31.031] epoch: 03  step: 00018740  lr: 0.0000004  loss:  0.9432246  loss_objs:  0.9432246 data time:  0.00021s  batch time:  0.90737s  
+[22:10:01.653] epoch: 03  step: 00018840  lr: 0.0000004  loss:  1.0388895  loss_objs:  1.0388895 data time:  0.00023s  batch time:  0.90660s  
+[22:11:32.306] epoch: 03  step: 00018940  lr: 0.0000004  loss:  1.1119517  loss_objs:  1.1119517 data time:  0.00022s  batch time:  0.90638s  
+[22:13:02.959] epoch: 03  step: 00019040  lr: 0.0000004  loss:  0.8045692  loss_objs:  0.8045692 data time:  0.00027s  batch time:  0.90366s  
+[22:14:33.502] epoch: 03  step: 00019140  lr: 0.0000003  loss:  1.1981913  loss_objs:  1.1981913 data time:  0.00022s  batch time:  0.90501s  
+[22:16:04.059] epoch: 03  step: 00019240  lr: 0.0000003  loss:  0.9308174  loss_objs:  0.9308174 data time:  0.00022s  batch time:  0.90455s  
+[22:17:34.660] epoch: 03  step: 00019340  lr: 0.0000003  loss:  1.2327665  loss_objs:  1.2327665 data time:  0.00024s  batch time:  0.90646s  
+[22:19:05.231] epoch: 03  step: 00019440  lr: 0.0000002  loss:  1.1639855  loss_objs:  1.1639855 data time:  0.00023s  batch time:  0.90585s  
+[22:20:35.915] epoch: 03  step: 00019540  lr: 0.0000002  loss:  1.9037732  loss_objs:  1.9037732 data time:  0.00022s  batch time:  0.90898s  
+[22:22:06.725] epoch: 03  step: 00019640  lr: 0.0000002  loss:  1.6554183  loss_objs:  1.6554183 data time:  0.00024s  batch time:  0.90749s  
+[22:23:37.514] epoch: 03  step: 00019740  lr: 0.0000002  loss:  1.9508936  loss_objs:  1.9508936 data time:  0.00038s  batch time:  0.90897s  
+[22:25:08.346] epoch: 03  step: 00019840  lr: 0.0000002  loss:  1.7769966  loss_objs:  1.7769966 data time:  0.00022s  batch time:  0.90757s  
+[22:26:39.129] epoch: 03  step: 00019940  lr: 0.0000001  loss:  2.1169422  loss_objs:  2.1169422 data time:  0.00022s  batch time:  0.90737s  
+[22:27:33.478] saving checkpoint to /root/checkpoints/x/0.0.1.g3m.slm1b.llama2/ckpt_03_0020000.pth
+[22:28:28.833] epoch: 03  step: 00020040  lr: 0.0000001  loss:  1.9793241  loss_objs:  1.9793241 data time:  0.00023s  batch time:  0.89804s  
+[22:29:58.454] epoch: 03  step: 00020140  lr: 0.0000001  loss:  1.8777519  loss_objs:  1.8777519 data time:  0.00022s  batch time:  0.89714s  
+[22:31:28.178] epoch: 03  step: 00020240  lr: 0.0000001  loss:  1.8962947  loss_objs:  1.8962947 data time:  0.00026s  batch time:  0.89808s  
+[22:32:57.791] epoch: 03  step: 00020340  lr: 0.0000001  loss:  2.3435793  loss_objs:  2.3435793 data time:  0.00020s  batch time:  0.89621s  
+[22:34:27.482] epoch: 03  step: 00020440  lr: 0.0000001  loss:  1.8493276  loss_objs:  1.8493276 data time:  0.00026s  batch time:  0.89855s  
+[22:35:57.624] epoch: 03  step: 00020540  lr: 0.0000000  loss:  1.7854455  loss_objs:  1.7854455 data time:  0.00025s  batch time:  0.90439s  
+[22:37:27.649] epoch: 03  step: 00020640  lr: 0.0000000  loss:  1.4879396  loss_objs:  1.4879396 data time:  0.00023s  batch time:  0.89617s  
+[22:38:57.538] epoch: 03  step: 00020740  lr: 0.0000000  loss:  2.3782716  loss_objs:  2.3782716 data time:  0.00023s  batch time:  0.90101s  
+[22:40:27.611] epoch: 03  step: 00020840  lr: 0.0000000  loss:  1.9110022  loss_objs:  1.9110022 data time:  0.00023s  batch time:  0.90472s  
+[22:41:58.186] epoch: 03  step: 00020940  lr: 0.0000000  loss:  1.8002195  loss_objs:  1.8002195 data time:  0.00024s  batch time:  0.90506s  
+[22:43:28.902] epoch: 03  step: 00021040  lr: 0.0000000  loss:  1.6330432  loss_objs:  1.6330432 data time:  0.00026s  batch time:  0.90920s  
+[22:45:00.060] epoch: 03  step: 00021140  lr: 0.0000000  loss:  1.5935560  loss_objs:  1.5935560 data time:  0.00015s  batch time:  0.91905s  
+[22:46:32.471] epoch: 03  step: 00021240  lr: 0.0000000  loss:  1.7748283  loss_objs:  1.7748283 data time:  0.00015s  batch time:  0.92214s
+...
+[NCCL][INFO]
+...
+[22:48:04.242] epoch: 03  step: 00021340  lr: 0.0000000  loss:  1.8389068  loss_objs:  1.8389068 data time:  0.00019s  batch time:  0.90913s  
+[22:48:20.545] epoch: 03  step: 00021360  lr: 0.0000000  loss:  1.7180004  loss_objs:  1.7180004 data time:  0.00013s  batch time:  0.27985s  
+[22:48:20.547] saving checkpoint to /root/checkpoints/x/0.0.1.g3m.slm1b.llama2/ckpt_03_0021360.pth

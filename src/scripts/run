@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+# inputs
+INPUT_SCRIPT=$1
+INPUT_ARGVS=${@:2}
+
+echo "+ INPUT_ARGVS: $INPUT_ARGVS"
+
+# if the input script is not found, exit
+if [ ! -f $INPUT_SCRIPT ]; then
+    echo "$INPUT_SCRIPT not found"
+    exit 1
+fi
+
+# envs
+export CUDA_LAUNCH_BLOCKING=0
+export OMP_NUM_THREADS=1
+export MASTER_ADDR=localhost
+export MASTER_PORT=12311
+
+# NCCL
+export FI_EFA_USE_DEVICE_RDMA=1
+export FI_EFA_FORK_SAFE=1
+export FI_LOG_LEVEL=1
+export FI_PROVIDER=efa
+export FI_EFA_ENABLE_SHM_TRANSFER=1
+export NCCL_PROTO=simple
+
+# nums of GPUs
+NGPUS=$(nvidia-smi -L | wc -l)
+echo "+ NGPUS: $NGPUS"
+if [ $NGPUS -eq 0 ]; then
+    echo "No GPU found"
+    exit 1
+fi
+
+# fire up
+set -x
+torchrun \
+    --rdzv-endpoint=localhost:$MASTER_PORT \
+    --nnode 1 \
+    --nproc_per_node $NGPUS \
+    $INPUT_SCRIPT \
+    $INPUT_ARGVS
