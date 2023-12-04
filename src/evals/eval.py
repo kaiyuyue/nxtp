@@ -135,7 +135,8 @@ def main(cfg):
         k_for_topk=args.k_for_topk,
     )
 
-    destroy_process_group()
+    if args.use_ddp:
+        destroy_process_group()
 
 
 """
