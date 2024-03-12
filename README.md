@@ -13,12 +13,12 @@ This project delves into a fundamental problem in computer vision − object rec
   <br/>
 </p>
 
-Linear models (such as ResNet) with a fully-connected layer (FC) and contrastive models (like CLIP) require predefined labels **before** inference, limiting their flexibility in real-world applications.
+Linear models (such as ResNet) and contrastive models (such as CLIP) require predefined labels **before** inference, limiting their flexibility in real-world applications.
 
 We extend **W** to cover the entire textual space using language models like LLaMA's 32K token embeddings.
 Our model predicts labels in a real-open manner through auto-regressive processing.
 
-Additionally, our one-shot sampling technique enables efficient large-scale predictions, such as the top-100 labels.
+Additionally, our one-shot sampling technique enables efficient large-scale discriminative predictions, such as the top-100 labels.
 
 ## Models
 
