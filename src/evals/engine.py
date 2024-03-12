@@ -39,10 +39,10 @@ Loader
 
 
 def init_loader(args, rank, world_size, transform=None):
-    from loader import build_dataloder
+    from loader import build_dataloader
 
     args.data_name = [args.test_dataset]
-    loader = build_dataloder(args, rank, world_size, is_train=False)
+    loader = build_dataloader(args, rank, world_size, is_train=False)
     categories = []
     return loader, categories
 
@@ -251,7 +251,10 @@ def prepare(args):
 
     # metrics
     metrics = {
-        "sscr": SemanticFScore(max_seq_len=args.max_seq_len).to(device),
+        "sscr": SemanticFScore(
+            model_name=args.eval_embedding_model,
+            max_seq_len=args.max_seq_len,
+        ).to(device),
     }
 
     # dtype
@@ -276,7 +279,7 @@ def prepare(args):
     _func_loader = init_loader
     loader, categories = _func_loader(
         args,
-        rank,
+        global_rank,
         world_size,
         transform=clip_preprocess,
     )

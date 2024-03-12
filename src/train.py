@@ -11,7 +11,7 @@ from torch.optim.lr_scheduler import CosineAnnealingLR
 
 from models.classifier import LangClassifier
 from encoding import construct_text_inputs, construct_embd_inputs
-from loader import build_dataloder
+from loader import build_dataloader
 from functions import load_clip, load_llama
 from utils import (
     load_config,
@@ -34,7 +34,8 @@ def main(cfg):
     init_nltk(download_dir=f"{args.cache_root}/nltk_data")
 
     rank, global_rank, world_size, device = setup_model_parallel(
-        seed=args.seed, mute_non_master_ranks=True
+        seed=args.seed,
+        mute_non_master_ranks=True,
     )
     master_process = global_rank == 0
     setup_for_distributed(master_process)
@@ -46,7 +47,7 @@ def main(cfg):
 
     llama_model, tokenizer, model_args = load_llama(args, device)
     clip_model = load_clip(args, device)
-    dataloder = build_dataloder(args, rank, world_size, is_train=True)
+    dataloader = build_dataloader(args, global_rank, world_size, is_train=True)
 
     ctx = torch.amp.autocast(device_type="cuda", dtype=args.ptdtype)
     scaler = torch.cuda.amp.GradScaler(enabled=(args.dtype == "float16"))
@@ -117,7 +118,7 @@ def main(cfg):
     batch_size = args.batch_size * grad_accum_steps
 
     # steps
-    steps_per_epoch = len(dataloder) // grad_accum_steps
+    steps_per_epoch = len(dataloader) // grad_accum_steps
     total_steps = steps_per_epoch * args.epochs
     warmup_steps = max(int(args.warmup_ratio * 0.01 * total_steps), args.warmup_steps)
 
@@ -134,7 +135,7 @@ def main(cfg):
     print(
         f"total training steps: {total_steps}\n",
         f"  epochs: {args.epochs}\n",
-        f"  dataloader length: {len(dataloder)} iters or {steps_per_epoch} steps in each epoch\n",
+        f"  dataloader length: {len(dataloader)} iters or {steps_per_epoch} steps in each epoch\n",
         f"  gradient accumulation steps: {grad_accum_steps}\n",
         f"  warmup steps: {warmup_steps} w/ ratio {args.warmup_ratio:.2f}%\n",
         f"  total batch size: {batch_size * world_size}\n",
@@ -179,7 +180,7 @@ def main(cfg):
         optimizer.zero_grad(set_to_none=True)
 
         t = time.perf_counter()
-        for i, (imgs, caps, keys) in enumerate(dataloder, start=1):
+        for i, (imgs, caps, keys) in enumerate(dataloader, start=1):
             data_time = time.perf_counter() - t
 
             with ctx:
@@ -280,7 +281,7 @@ def main(cfg):
 
             scaler.scale(loss).backward()
 
-            if i == 1 or i == len(dataloder) or i % grad_accum_steps == 0:
+            if i == 1 or i == len(dataloader) or i % grad_accum_steps == 0:
                 if grad_clip > 0.0:
                     scaler.unscale_(optimizer)
                     torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
@@ -306,7 +307,7 @@ def main(cfg):
             batch_time = time.perf_counter() - t
             t = time.perf_counter()
 
-            if i == 1 or i == len(dataloder) or i % args.log_interval == 0:
+            if i == 1 or i == len(dataloader) or i % args.log_interval == 0:
                 warmup_tag = (
                     f"warmup step: {str(global_step).zfill(5)}"
                     if global_step <= warmup_steps
@@ -317,9 +318,11 @@ def main(cfg):
                     f"step: {str(global_step).zfill(8)} ",
                     f"lr: {last_lr:.7f} ",
                     f"loss: {loss.item() * grad_accum_steps:>10.7f}",
-                    f"loss_caps: {loss_caps.item():>10.7f}"
-                    if args.weight_loss_cap > 0.0
-                    else "",
+                    (
+                        f"loss_caps: {loss_caps.item():>10.7f}"
+                        if args.weight_loss_cap > 0.0
+                        else ""
+                    ),
                     f"loss_objs: {loss_objs.item():>10.7f}",
                     f"data time: {data_time:>8.5f}s ",
                     f"batch time: {batch_time:>8.5f}s ",
@@ -338,8 +341,8 @@ def main(cfg):
                 )
                 pgs = global_step
 
-            if global_step % steps_per_epoch == 0:
-                break
+    # TODO: save the last ckpt
+    save_checkpoint(args, model, optimizer, lr_scheduler, epoch, global_step)
 
     destroy_process_group()
 

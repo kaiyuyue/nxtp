@@ -2,6 +2,7 @@ from typing import List
 
 import torch
 import torch.nn.functional as F
+import clip
 
 from torchmetrics import Metric
 from transformers import AutoModel, AutoTokenizer
@@ -15,24 +16,47 @@ class SemanticFScore(Metric):
     def __init__(
         self,
         *args,
-        model_name="sentence-transformers/all-MiniLM-L6-v2",
+        model_name="bert",
         cache_dir: str = ".cache",
         max_seq_len: int = 128,
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
-        self.model_name = model_name
         self.cache_dir = cache_dir
-        self._tokenizer = AutoTokenizer.from_pretrained(
-            self.model_name, cache_dir=self.cache_dir
-        )
-        self._model = AutoModel.from_pretrained(
-            self.model_name, cache_dir=self.cache_dir
-        )
         self.max_seq_len = max_seq_len
         print(f"max_seq_len for Metric::SemanticFScore: {self.max_seq_len}")
 
+        self._set_embed_model(model_name)
         self._add_states()
+
+    def _set_embed_model(self, model_name: str):
+        assert model_name in ["bert", "clip"]
+
+        if model_name == "bert":
+            self.model_name = "sentence-transformers/all-MiniLM-L6-v2"
+            self._tokenizer = AutoTokenizer.from_pretrained(
+                self.model_name, cache_dir=self.cache_dir
+            )
+            self._model = AutoModel.from_pretrained(
+                self.model_name, cache_dir=self.cache_dir
+            )
+            self._model.eval()
+            self._model.to(self.device)
+            self.encode = self.encode_bert
+        elif model_name == "clip":
+            model, _ = clip.load(
+                "ViT-L/14",
+                device="cpu",
+                download_root=self.cache_dir,
+                jit=False,
+            )
+            del model.visual
+
+            self._model = model.eval().to(self.device)
+            self._tokenizer = clip.tokenize
+            self.encode = self.encode_clip
+        else:
+            raise NotImplementedError
 
     def _add_states(self):
         self.add_state("recall", default=torch.tensor(0.0), dist_reduce_fx="sum")
@@ -43,7 +67,7 @@ class SemanticFScore(Metric):
         self.add_state("div_avg", default=torch.tensor(0.0), dist_reduce_fx="sum")
         self.add_state("div_std", default=torch.tensor(0.0), dist_reduce_fx="sum")
 
-    def encode(self, sentence: str, **kwargs) -> torch.Tensor:
+    def encode_bert(self, sentence: str, **kwargs) -> torch.Tensor:
         """
         Encode the input sentence with the BERT model.
 
@@ -71,6 +95,11 @@ class SemanticFScore(Metric):
         embeddings = summed / summed_mask
         embeddings = embeddings.squeeze(0)
 
+        return embeddings
+
+    def encode_clip(self, sentence: str, **kwargs) -> torch.Tensor:
+        tokens = self._tokenizer([sentence], truncate=True).to(self.device)
+        embeddings = self._model.encode_text(tokens).float()[0]
         return embeddings
 
     def update(self, values: List[List[str]], targets: List[List[str]]):

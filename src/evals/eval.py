@@ -36,7 +36,8 @@ def main(cfg):
 
     args.text_decoder_strategy = "one_shot"  # greedy | beam | one_shot
     args.ranking_method = "prob"  # clip, sim, ppl, prob, none
-    args.max_gen_len: int = 64
+    args.max_gen_len = 64
+    args.eval_embedding_model = "bert"  # clip | bert
 
     args.sim_reduction = "mean"
     args.sim_eculidean_dist = True
@@ -46,7 +47,7 @@ def main(cfg):
     args.normalize_clip_scores = False
 
     args.prompt_type = "list"
-    args.benchmark_infer_time = True
+    args.benchmark_infer_time = bool(0)
     if args.benchmark_infer_time:
         args.batch_size = 1
         args.running_cnt: int = 1
@@ -60,7 +61,8 @@ def main(cfg):
         f"k_for_topk: {args.k_for_topk}\n"
         f"xk_for_one_shot_sampling: {args.xk_for_one_shot_sampling}\n"
         f"ranking_method: {args.ranking_method}\n"
-        f"text_decoder_strategy: {args.text_decoder_strategy}"
+        f"text_decoder_strategy: {args.text_decoder_strategy}\n"
+        f"eval_embedding_model: {args.eval_embedding_model}"
     )
     if args.ranking_method == "sim":
         print(
@@ -114,7 +116,7 @@ def main(cfg):
         args.resume_ckpt_path = args.eval_ckpt_path  # for loading the model
         load_checkpoint(args, model, optimizer=None, scheduler=None, strict=False)
 
-    preprocess = build_preprocess(args, is_train=False)
+    preprocess = build_preprocess(args.input_size)
 
     engine_func = engine_lang_classifier
 
@@ -535,9 +537,9 @@ def post_process(
             # Eq. A.1 in the paper
             current_pred_clip_score = {}
             for label, tokens in current_pred_tokens.items():
-                current_pred_clip_score[
-                    label
-                ] = 0.0  # will have it later in the evals.engine function
+                current_pred_clip_score[label] = (
+                    0.0  # will have it later in the evals.engine function
+                )
             sorted_current_pred_labels = sorted(
                 current_pred_clip_score.items(), key=lambda x: x[1], reverse=True
             )

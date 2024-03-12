@@ -66,8 +66,9 @@ def build_datapipe(
             ds in _DATASETS_META
         ), f"dataset {ds} not found in {_DATASETS_META.keys()}"
         ds_length += _DATASETS_META[ds]["length"]
-        ds_roots += [os.path.join(ds_root, _DATASETS_META[ds]["root"])]
-        print(f"datapipe + {ds} with length {_DATASETS_META[ds]['length']}")
+        ds_dir = os.path.join(ds_root, _DATASETS_META[ds]["root"])
+        ds_roots += [ds_dir]
+        print(f"datapipe + {ds} : length {_DATASETS_META[ds]['length']} : {ds_dir}")
 
     dp = FileLister(ds_roots, "*.tar", recursive=True)
     dp = FileOpener(dp, mode="b")
@@ -110,14 +111,14 @@ def apply_transform(item, image_transform=None, text_transform=None):
     return img, txt, key
 
 
-def build_preprocess(args, is_train=False):
+def build_preprocess(input_size):
     to_rgb = [T.Lambda(lambda x: x.convert("RGB"))]
 
     # NOTE: because we freeze CLIP, won't apply augmentations on images for now
     resized_crop = [
         # https://github.com/openai/CLIP/blob/main/clip/clip.py#L79
-        T.Resize(args.input_size, interpolation=T.InterpolationMode.BICUBIC),
-        T.CenterCrop(args.input_size),
+        T.Resize(input_size, interpolation=T.InterpolationMode.BICUBIC),
+        T.CenterCrop(input_size),
     ]
 
     norm = [
@@ -130,15 +131,15 @@ def build_preprocess(args, is_train=False):
     return T.Compose([*resized_crop, *to_rgb, *norm])
 
 
-def build_dataloder(args, local_rank, world_size, is_train=True):
+def build_dataloader(args, global_rank, world_size, is_train=True):
     dp = build_datapipe(
         ds_root=args.data_root,
         ds_name=args.data_name,
-        image_transform=build_preprocess(args, is_train=is_train),
+        image_transform=build_preprocess(args.input_size),
         text_transform=None,
         shuffle=True,
         num_shards=world_size,
-        rank=local_rank,
+        rank=global_rank,
     )
 
     dl = DataLoader(
@@ -147,6 +148,6 @@ def build_dataloder(args, local_rank, world_size, is_train=True):
         shuffle=True,
         num_workers=args.num_workers,
         pin_memory=args.pin_mem,
-        drop_last=False,
+        drop_last=True if is_train else False,
     )
     return dl

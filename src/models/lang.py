@@ -266,13 +266,13 @@ class LLaMATransformer(nn.Module):
                                 answer_index:prev_token_index,
                             ] = float("-inf")
                             if self.decouple_freqs_cis:
-                                freqs_cis_bs[
-                                    batch_index, prev_token_index:
-                                ] = freqs_cis[
-                                    answer_index : answer_index
-                                    + seqlen
-                                    - prev_token_index
-                                ]
+                                freqs_cis_bs[batch_index, prev_token_index:] = (
+                                    freqs_cis[
+                                        answer_index : answer_index
+                                        + seqlen
+                                        - prev_token_index
+                                    ]
+                                )
 
                     prev_token_index = token_index
 

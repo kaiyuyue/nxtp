@@ -1,9 +1,7 @@
-from typing import List
 from functools import partial
 
 import random
 import torch
-from torch import Tensor
 
 from random import shuffle
 from utils import get_noun_words

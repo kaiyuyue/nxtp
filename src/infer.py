@@ -44,7 +44,7 @@ def main(ckpt_path: str, img_path: str, num_labels: int = 10):
 
     # load image
     img = Image.open(img_path).convert("RGB")
-    img = build_preprocess(cfg, is_train=False)(img)
+    img = build_preprocess(cfg.input_size)(img)
     img = img.unsqueeze(0).to(device)
 
     # infer

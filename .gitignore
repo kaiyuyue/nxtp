@@ -173,3 +173,11 @@ log.*
 # Slurm
 *slurm_job_*_slurm.sh
 *_slurm.sh
+*.slurm
+*.sh
+
+# Others
+*tmps
+*stats
+*.list
+*.pkl

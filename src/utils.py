@@ -56,9 +56,9 @@ def set_dtype(args):
     fpdtype = {
         "float32": torch.cuda.FloatTensor if cuda_is_available else torch.FloatTensor,
         "float16": torch.cuda.HalfTensor if cuda_is_available else torch.HalfTensor,
-        "bfloat16": torch.cuda.BFloat16Tensor
-        if cuda_is_available
-        else torch.BFloat16Tensor,
+        "bfloat16": (
+            torch.cuda.BFloat16Tensor if cuda_is_available else torch.BFloat16Tensor
+        ),
     }[args.dtype]
 
     args.ptdtype = ptdtype
@@ -215,6 +215,7 @@ def init_nltk(download_dir=None, force=False):
 
 def filter_input_text(text):
     text = text.lower()
+    text = text.replace("\n", " ")
 
     # rm massive noise words
     NOISE_WORDS = [
@@ -222,6 +223,7 @@ def filter_input_text(text):
         "persons",
         "stock",
         "illustration",
+        "foreground",
         "background",
         "photography",
         "image",
@@ -229,6 +231,7 @@ def filter_input_text(text):
         "front",
         "day",
         "ounce",
+        "top",
     ]
     for nw in NOISE_WORDS:
         text = text.replace(nw, " ")
@@ -237,6 +240,7 @@ def filter_input_text(text):
     text = re.sub(r"[^a-zA-Z' 0-9.,&-]", "", text)
     for c in [",", "&"]:
         text = text.replace(c, " ")
+    text = re.sub("\s+", " ", text).strip()
     return text
 
 

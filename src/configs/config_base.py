@@ -11,14 +11,15 @@ class Args:
     """
 
     # hparams for directories
-    data_root: str = "none"
+    dev_root: str = "/path/to/dev/dir"
 
-    ckpt_root: str = f"{data_root}/checkpoints"
+    data_root: str = f"{dev_root}/data"
+    ckpt_root: str = f"{dev_root}/checkpoints"
     cache_root: str = f"{ckpt_root}/cache"
 
     ckpt_dir: str = f"{ckpt_root}/x"
-    hf_cache_dir: str = f"{ckpt_root}/huggingface"
-    results_dir: str = f"{ckpt_root}/results"
+    hf_cache_dir: str = f"{cache_root}/huggingface"
+    results_dir: str = f"{dev_root}/results"
 
     # hparams for caching results
     if not os.path.exists(results_dir):
