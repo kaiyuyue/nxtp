@@ -13,13 +13,12 @@ This project delves into a fundamental problem in computer vision − object rec
   <br/>
 </p>
 
-Linear models (such as ResNet) with a fully-connected layer (FC) and contrastive models (like CLIP) that utilize a text encoder require predefined labels **prior to** inference to construct the classification weights **W**.
-This limitation restricts their flexibility in real-world applications.
+Linear models (such as ResNet) with a fully-connected layer (FC) and contrastive models (like CLIP) require predefined labels **before** inference, limiting their flexibility in real-world applications.
 
-To overcome this constraint, we propose expanding **W** to encompass a complete textual space from language models, such as the 32K token embeddings of LLaMA.
-Then, our model predicts any label at a real-open level within an auto-regressive manner, without the need for label predefinition.
+We extend **W** to cover the entire textual space using language models like LLaMA's 32K token embeddings.
+Our model predicts labels in a real-open manner through auto-regressive processing.
 
-We employ our one-shot sampling that samples multiple labels in parallel, can efficiently perform large-scale predictions, such as predicting the top-100 labels.
+Additionally, our one-shot sampling technique enables efficient large-scale predictions, such as the top-100 labels.
 
 ## Models
 
