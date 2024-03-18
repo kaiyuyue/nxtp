@@ -65,7 +65,7 @@ The following table shows the reproduced results of recall (**R** column in Tabl
   <tr>
     <td align="center">1.78B</td>
     <td align="center">G70M</td>
-    <td align="center"><a href="https://huggingface.co/kaiyuyue/nxtp/tree/main/ckpt_epoch_03_iter_1656549.pth">Hugging Face</a></td>
+    <td align="center"><a href="https://huggingface.co/kaiyuyue/nxtp/blob/main/ckpt_epoch_03_iter_1656549.pth">Hugging Face</a></td>
     <td align="center"><tt>e177c7</tt></td>
     <td align="center">0.721</td>
     <td align="center">0.765</td>
