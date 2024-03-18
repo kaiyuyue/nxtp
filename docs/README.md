@@ -264,6 +264,9 @@ The numbers should be the same if using the provided checkpoint trained on G3M.
 
 ## ONNX Export
 
+![netron](https://github.com/kaiyuyue/nxtp/assets/19852297/56d46c2e-8f6f-4eee-8dc5-b13ffa380d78)
+View the onnx models in [Netron](https://netron.app).
+
 We provide a script [src/onnx_engine.py](../src/onnx_engine.py) to export the model to ONNX format.
 The script is naive and plain to demonstrate the process of exporting our model to ONNX format.
 For more advanced features, please refer to the [pytorch/onnx](https://pytorch.org/docs/stable/onnx.html) and [microsoft/onnxruntime on LLaMA/Mistral](https://github.com/microsoft/onnxruntime/blob/main/onnxruntime/python/tools/transformers/models/llama/README.md).
