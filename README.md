@@ -5,11 +5,13 @@
 ## Updates
 
 Mar 17, 2024
-- export onnx format: doc - [ONNX Export](docs/README.md#onnx-export)
+
+- export onnx models: [docs/onnx-export](docs/README.md#onnx-export)
 
 Mar 03, 2024
-- examples with top-20 predictions to this README: sec - [Examples](#examples)
-- utilize CLIP ViT- L/14 as the textual embedding model in evaluation metric (Table A.8 of the paper): [class::Metric](src/evals/metrics.py#L32)
+
+- add [examples](#examples) with top-20 predictions to this readme
+- add CLIP ViT- L/14 as [the textual embedding model](src/evals/metrics.py#L32) in evaluation metric (Table A.8 of the paper)
 
 ## Introduction
 

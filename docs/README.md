@@ -2,18 +2,17 @@
 
 - [Dependencies](#dependencies)
 - [Data](#data)
-    - [Using img2dataset Tool](#using-img2dataset-tool)
-    - [Packing Image-Caption Pairs](#packing-image-caption-pairs)
+  - [Using img2dataset Tool](#using-img2dataset-tool)
+  - [Packing Image-Caption Pairs](#packing-image-caption-pairs)
 - [Configuring](#configuring)
 - [Pareparing LLaMA 2](#pareparing-llama-2)
 - [Training](#training)
-    - [Logging](#logging)
+  - [Logging](#logging)
 - [Evaluation](#evaluation)
-    - [Results](#results)
+  - [Results](#results)
 - [ONNX Export](#onnx-export)
-    - [Exporting](#exporting)
-    - [Inference](#inference)
-
+  - [Exporting](#exporting)
+  - [Inference](#inference)
 
 ## Dependencies
 
@@ -278,6 +277,7 @@ PyTorch version should be `>= 2.1` and other dependencies should be installed au
 #### 1. export image encoder
 
 Please look at the script [src/onnx_engine.py](../src/onnx_engine.py) and 
+
 - uncomment the corresponding lines [L64-L94](../src/onnx_engine.py#L64-L94) for exporting the image encoder;
 - keep the rest of the lines commented out.
 
@@ -295,6 +295,7 @@ The exported ONNX encoder should be save at `onnx_models/encoder.onnx`.
 #### 2. export token embeddings
 
 Please look at the script [src/onnx_engine.py](../src/onnx_engine.py) and
+
 - uncomment the corresponding lines [L99-L101](../src/onnx_engine.py#L99-L101) for exporting the token embeddings;
 - keep the rest of the lines commented out.
 
@@ -312,6 +313,7 @@ The exported ONNX token embeddings should be save at `onnx_models/Wte.npz`.
 #### 3. export language decoder
 
 Please look at the script [src/onnx_engine.py](../src/onnx_engine.py) and
+
 - uncomment the corresponding lines [L106-L132](../src/onnx_engine.py#L106-L132) for exporting the language decoder;
 - keep the rest of the lines commented out.
 
@@ -319,6 +321,7 @@ Please look at the script [src/onnx_engine.py](../src/onnx_engine.py) and
 > Due to the limitation of the ONNX model size, which is 2GB, we need to split the language decoder into three parts. (If you have a better solution, please let us know.)
 
 In [src/models/lang.py](../src/models/lang.py), please
+
 - comment the normal forward function [L212-L321](../src/models/lang.py#L212-L321);
 - uncomment the three forward functions [L327-L349](../src/models/lang.py#L327-L349).
 
@@ -333,10 +336,11 @@ python onnx_engine.py \
     --onnx-export
 ```
 
-The exported ONNX language decoder should be save at 
-- `onnx_models/decoder_p1.onnx` for part1, 
-- `onnx_models/decoder_p2.onnx` for part2, 
-- and `onnx_models/decoder_p3.onnx` for part3.
+The exported ONNX language decoder should be save at
+
+- `onnx_models/decoder_p1.onnx` for part1,
+- `onnx_models/decoder_p2.onnx` for part2,
+- `onnx_models/decoder_p3.onnx` for part3.
 
 ### Inference
 
@@ -420,4 +424,4 @@ top-20 predictions:
 ```
 
 > [!NOTE]
-> A method to further reduce the decoder size is by truncating it to include only one transformer block and the final output layer. Please refer to **Table 3. in the paper**, which shows the performance of the most compact decoder.
+> A method to further reduce the decoder size is by truncating it to include only one transformer block and the final output layer. Please refer to **Table 3. in the paper**, which shows the performance of the most compact decoder (0.77B total parameters).
