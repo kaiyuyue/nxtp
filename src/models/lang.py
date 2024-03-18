@@ -66,11 +66,40 @@ def apply_rotary_emb(
     xk: torch.Tensor,
     freqs_cis: torch.Tensor,
 ) -> Tuple[torch.Tensor, torch.Tensor]:
-    xq_ = torch.view_as_complex(xq.float().reshape(*xq.shape[:-1], -1, 2))
-    xk_ = torch.view_as_complex(xk.float().reshape(*xk.shape[:-1], -1, 2))
-    freqs_cis = reshape_for_broadcast(freqs_cis, xq_)
-    xq_out = torch.view_as_real(xq_ * freqs_cis).flatten(3)
-    xk_out = torch.view_as_real(xk_ * freqs_cis).flatten(3)
+    """
+    original implementation
+    """
+    # xq_ = torch.view_as_complex(xq.float().reshape(*xq.shape[:-1], -1, 2))
+    # xk_ = torch.view_as_complex(xk.float().reshape(*xk.shape[:-1], -1, 2))
+    # freqs_cis = reshape_for_broadcast(freqs_cis, xq_)
+    # xq_out = torch.view_as_real(xq_ * freqs_cis).flatten(3)
+    # xk_out = torch.view_as_real(xk_ * freqs_cis).flatten(3)
+    # return xq_out.type_as(xq), xk_out.type_as(xk)
+
+    """
+    for onnx export
+
+    NOTE: 
+        Since onnx does not support complex data type, 
+        we implement the complex multiplication with real numbers.
+    """
+    xq_real = xq.float().reshape(*xq.shape[:-1], -1, 2)[..., 0]
+    xq_imag = xq.float().reshape(*xq.shape[:-1], -1, 2)[..., 1]
+    xk_real = xk.float().reshape(*xk.shape[:-1], -1, 2)[..., 0]
+    xk_imag = xk.float().reshape(*xk.shape[:-1], -1, 2)[..., 1]
+
+    freqs_cis = freqs_cis.view(1, freqs_cis.shape[0], 1, -1, 2)
+    freqs_cos = freqs_cis[..., 0]
+    freqs_sin = freqs_cis[..., 1]
+
+    xq_out_real = xq_real * freqs_cos - xq_imag * freqs_sin
+    xq_out_imag = xq_real * freqs_sin + xq_imag * freqs_cos
+    xk_out_real = xk_real * freqs_cos - xk_imag * freqs_sin
+    xk_out_imag = xk_real * freqs_sin + xk_imag * freqs_cos
+
+    xq_out = torch.stack([xq_out_real, xq_out_imag], dim=-1).flatten(3)
+    xk_out = torch.stack([xk_out_real, xk_out_imag], dim=-1).flatten(3)
+
     return xq_out.type_as(xq), xk_out.type_as(xk)
 
 
@@ -86,7 +115,7 @@ class Attention(nn.Module):
         self.wv = nn.Linear(args.dim, args.n_heads * self.n_embd, bias=False)
         self.wo = nn.Linear(args.n_heads * self.n_embd, args.dim, bias=False)
 
-    def forward(self, x, start_pos, freqs_cis, mask):
+    def forward(self, x, freqs_cis, mask):
         bs, seqlen, _ = x.shape
         q, k, v = self.wq(x), self.wk(x), self.wv(x)
 
@@ -139,12 +168,12 @@ class TransformerBlock(nn.Module):
         self.attention_norm = RMSNorm(args.dim, eps=args.norm_eps)
         self.ffn_norm = RMSNorm(args.dim, eps=args.norm_eps)
 
-    def forward(self, x, start_pos, freqs_cis, mask):
-        h = x + self.attention.forward(
-            self.attention_norm(x), start_pos, freqs_cis, mask
-        )
-        out = h + self.feed_forward.forward(self.ffn_norm(h))
-        return out
+    def forward(self, x, freqs_cis, mask):
+        h = self.attention_norm(x)
+        h = x + self.attention.forward(h, freqs_cis, mask)
+        x = self.ffn_norm(h)
+        x = h + self.feed_forward.forward(x)
+        return x
 
 
 class LLaMATransformer(nn.Module):
@@ -174,6 +203,11 @@ class LLaMATransformer(nn.Module):
             self.params.dim // self.params.n_heads, self.params.max_seq_len * 2
         )
         self.decouple_freqs_cis = False
+
+        """
+        for onnx export
+        """
+        self.freqs_cis = torch.view_as_real(self.freqs_cis)
 
     def forward(
         self,
@@ -280,8 +314,42 @@ class LLaMATransformer(nn.Module):
                     freqs_cis = freqs_cis_bs
 
         for layer in self.layers:
-            h = layer(h, start_pos, freqs_cis, mask)
+            h = layer(h, freqs_cis, mask)
         h = self.norm(h)  # [bs, tokens, dim]
 
         output = self.output(h) if is_train else self.output(h[:, -1, :])
         return output
+
+    """
+    forward for onnx export
+    """
+
+    # def forward(self, tokens, mask):
+    #     bs, seqlen = tokens.shape[:2]
+    #     freqs_cis = self.freqs_cis[0:seqlen]
+    #     # NOTE:
+    #     #   export which part of the model you need
+    #     #   part1: self._forward_onnx_part1
+    #     #   part2: self._forward_onnx_part2
+    #     #   part3: self._forward_onnx_part3
+    #     #   in below
+    #     return self._forward_onnx_part3(tokens, freqs_cis, mask=mask)
+
+    # def _forward_onnx_part1(self, h, freqs_cis, mask=None):
+    #     h = self.layers[0](h, freqs_cis, mask)
+    #     h = self.layers[1](h, freqs_cis, mask)
+    #     return h
+
+    # def _forward_onnx_part2(self, h, freqs_cis, mask=None):
+    #     h = self.layers[2](h, freqs_cis, mask)
+    #     h = self.layers[3](h, freqs_cis, mask)
+    #     return h
+
+    # def _forward_onnx_part3(self, h, freqs_cis, mask=None):
+    #     h = self.layers[4](h, freqs_cis, mask)
+    #     h = self.layers[5](h, freqs_cis, mask)
+
+    #     h = self.norm(h)  # [bs, tokens, dim]
+    #     h = h[:, -1, :]
+    #     h = self.output(h)
+    #     return h

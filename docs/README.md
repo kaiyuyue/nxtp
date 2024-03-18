@@ -10,6 +10,11 @@
     - [Logging](#logging)
 - [Evaluation](#evaluation)
     - [Results](#results)
+- [ONNX Export](#onnx-export)
+    - [Exporting](#exporting)
+    - [Inference](#inference)
+    - [More Resources](#more-resources)
+
 
 ## Dependencies
 
@@ -257,3 +262,160 @@ The numbers should be the same if using the provided checkpoint trained on G3M.
 | **#&nbsp;params** | **training&nbsp;group**  |  **R**  |  **P**  |  **F1** |  **R**  |  **P**  |  **F1** |  **R**     |    **P**   |  **F1** |
 |     1.78B         |        &nbsp; G3M        | 0.73970 | 0.53118 | 0.61234 | 0.70325 | 0.71873 | 0.70859 | 0.61588    |   0.54895  | 0.57380 |
 |     1.78B         |        G70M              | 0.72099 | 0.51171 | 0.59288 | 0.76546 | 0.75607 | 0.75811 | 0.66123    |   0.56283  | 0.60118 |
+
+## ONNX Export
+
+We provide a script [src/onnx_engine.py](../src/onnx_engine.py) to export the model to ONNX format.
+The script is naive and plain to demonstrate the process of exporting our model to ONNX format.
+For more advanced features, please refer to the [pytorch/onnx](https://pytorch.org/docs/stable/onnx.html) and [microsoft/onnxruntime](https://github.com/microsoft/onnxruntime/blob/main/onnxruntime/python/tools/transformers/models/llama/README.md).
+
+PyTorch version should be `>= 2.1` and other dependencies should be installed automatically sticking to the torch version, such as `onnx`, `onnxruntime`, and others.
+
+### Exporting
+
+#### 1. export image encoder
+
+Please look at the script [src/onnx_engine.py](../src/onnx_engine.py) and 
+- uncomment the corresponding lines [L64-L94](../src/onnx_engine.py#L64-L94) for exporting the image encoder;
+- keep the rest of the lines commented out.
+
+Then run
+
+```bash
+python onnx_engine.py \
+    --ckpt-path path/to/model/checkpoint \
+    --img-path ../assets/sora.png \
+    --onnx-export
+```
+
+The exported ONNX encoder should be save at `onnx_models/encoder.onnx`.
+
+#### 2. export token embeddings
+
+Please look at the script [src/onnx_engine.py](../src/onnx_engine.py) and
+- uncomment the corresponding lines [L99-L101](../src/onnx_engine.py#L99-L101) for exporting the token embeddings;
+- keep the rest of the lines commented out.
+
+Then run
+
+```bash
+python onnx_engine.py \
+    --ckpt-path path/to/model/checkpoint \
+    --img-path ../assets/sora.png \
+    --onnx-export
+```
+
+The exported ONNX token embeddings should be save at `onnx_models/Wte.npz`.
+
+#### 3. export language decoder
+
+Please look at the script [src/onnx_engine.py](../src/onnx_engine.py) and
+- uncomment the corresponding lines [L106-L132](../src/onnx_engine.py#L106-L132) for exporting the language decoder;
+- keep the rest of the lines commented out.
+
+> [!IMPORTANT]
+> Due to the limitation of the ONNX model size, which is 2GB, we need to split the language decoder into three parts. (If you have a better solution, please let us know.)
+
+In [src/models/lang.py](../src/models/lang.py), please
+- comment the normal forward function [L212-L321](../src/models/lang.py#L212-L321);
+- uncomment the three forward functions [L327-L349](../src/models/lang.py#L324-L333).
+
+For each part of the decoder, please modify the `decoder_part = 1` in the line [L113](../src/onnx_engine.py#L113) and modify the `self._forward_onnx_part1` in the line [L336](../src/models/lang.py#L336) at the same time.
+
+Then run
+
+```bash
+python onnx_engine.py \
+    --ckpt-path path/to/model/checkpoint \
+    --img-path ../assets/sora.png \
+    --onnx-export
+```
+
+The exported ONNX language decoder should be save at 
+- `onnx_models/decoder_p1.onnx` for part1, 
+- `onnx_models/decoder_p2.onnx` for part2, 
+- and `onnx_models/decoder_p3.onnx` for part3.
+
+### Inference
+
+You can skip the exporting steps and directly run the inference with the provided ONNX models.
+
+<table>
+  <tbody>
+  <th valign="bottom">onnx model</th>
+  <th valign="bottom">checkpoint</th>
+  <th valign="bottom">md5</th>
+  <th valign="bottom">size</th>
+  <tr>
+    <td align="center">encoder.onnx</td>
+    <td align="center"><a href="https://huggingface.co/kaiyuyue/nxtp/tree/main/onnx_models">huggingface/main/onnx_models</a></td>
+    <td align="center"><tt>f600f8</tt></td>
+    <td align="center">1.2G</td>
+  </tr>
+  <tr>
+    <td align="center">Wte.npz</td>
+    <td align="center"><a href="https://huggingface.co/kaiyuyue/nxtp/tree/main/onnx_models">huggingface/main/onnx_models</a></td>
+    <td align="center"><tt>3c114e</tt></td>
+    <td align="center">501M</td>
+  </tr>
+  <tr>
+    <td align="center">decoder_p1.onnx</td>
+    <td align="center"><a href="https://huggingface.co/kaiyuyue/nxtp/tree/main/onnx_models">huggingface/main/onnx_models</a></td>
+    <td align="center"><tt>d297fd</tt></td>
+    <td align="center">1.6G</td>
+  </tr>
+  <tr>
+    <td align="center">decoder_p2.onnx</td>
+    <td align="center"><a href="https://huggingface.co/kaiyuyue/nxtp/tree/main/onnx_models">huggingface/main/onnx_models</a></td>
+    <td align="center"><tt>552f20</tt></td>
+    <td align="center">1.6G</td>
+  </tr>
+  <tr>
+    <td align="center">decoder_p3.onnx</td>
+    <td align="center"><a href="https://huggingface.co/kaiyuyue/nxtp/tree/main/onnx_models">huggingface/main/onnx_models</a></td>
+    <td align="center"><tt>8f9619</tt></td>
+    <td align="center">2.0G</td>
+  </tr>
+  </tbody>
+</table>
+
+Put the ONNX models in the `src/onnx_models` folder.
+
+Then run
+
+```bash
+python onnx_engine.py \
+    --ckpt-path path/to/model/checkpoint \
+    --img-path ../assets/sora.png \
+    --num-labels 20
+```
+
+The onnx models are running on CPUs. 
+The outputs should be 
+
+```bash
+inference time: 179.836s
+top-20 predictions:
+| prob: 0.54581 - cloud
+| prob: 0.08870 - word
+| prob: 0.06575 - sky
+| prob: 0.03615 - letter
+| prob: 0.02172 - sora
+| prob: 0.01402 - logo
+| prob: 0.00980 - text
+| prob: 0.00884 - title
+| prob: 0.00672 - top
+| prob: 0.00669 - blue
+| prob: 0.00643 - photo
+| prob: 0.00404 - picture
+| prob: 0.00281 - storm
+| prob: 0.00264 - middle
+| prob: 0.00232 - name
+| prob: 0.00231 - sonora
+| prob: 0.00215 - art
+| prob: 0.00183 - sun
+| prob: 0.00168 - soar
+```
+
+> [!NOTE]
+> A method to further reduce the decoder size is by truncating it to include only one transformer block and the final output layer. Please refer to Table 3. in the paper, which shows the performance of the most compact decoder.

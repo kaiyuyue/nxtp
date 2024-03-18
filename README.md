@@ -2,6 +2,15 @@
 
 [arXiv](https://arxiv.org/abs/2312.02142) | [Colab](https://colab.research.google.com/drive/1pJX37LP5xGLDzD3H7ztTmpq1RrIBeWX3?usp=sharing) | [Documentation](docs/README.md)
 
+## Updates
+
+Mar 17, 2024
+- export onnx format: doc - [ONNX Export](docs/README.md#onnx-export)
+
+Mar 03, 2024
+- examples with top-20 predictions to this README: sec - [Examples](#examples)
+- utilize CLIP ViT- L/14 as the textual embedding model in evaluation metric (Table A.8 of the paper): [class::Metric](src/evals/metrics.py#L32)
+
 ## Introduction
 
 This project delves into a fundamental problem in computer vision − object recognition − translating an image into object labels.
@@ -18,7 +27,7 @@ Linear models (such as ResNet) and contrastive models (such as CLIP) require pre
 We extend **W** to cover the entire textual space using language models like LLaMA's 32K token embeddings.
 Our model predicts labels in a real-open manner through auto-regressive processing.
 
-Additionally, our one-shot sampling technique enables efficient large-scale discriminative predictions, such as the top-100 labels.
+Additionally, our one-shot sampling technique enables efficient large-scale discriminative predictions, such as the **top-100** labels.
 
 
 ## Examples 
@@ -47,7 +56,7 @@ The following table shows the reproduced results of recall (**R** column in Tabl
   <tr>
     <td align="center">1.78B</td>
     <td align="center">&nbsp;&nbsp;G3M</td>
-    <td align="center"><a href="https://drive.google.com/file/d/1QYT7kXD9qks6rQh0m2PnVlnSffj8VXNh/view?usp=sharing">Google Drive</a> | <a href="https://huggingface.co/kaiyuyue/nxtp/tree/main">Hugging Face</a></td>
+    <td align="center"><a href="https://huggingface.co/kaiyuyue/nxtp/blob/main/ckpt_epoch_03_iter_0021360.pth">Hugging Face</a></td>
     <td align="center"><tt>b2a69b</tt></td>
     <td align="center">0.740</td>
     <td align="center">0.703</td>
@@ -56,8 +65,8 @@ The following table shows the reproduced results of recall (**R** column in Tabl
   <tr>
     <td align="center">1.78B</td>
     <td align="center">G70M</td>
-    <td align="center">-</td>
-    <td align="center">-</td>
+    <td align="center"><a href="https://huggingface.co/kaiyuyue/nxtp/tree/main/ckpt_epoch_03_iter_1656549.pth">Hugging Face</a></td>
+    <td align="center"><tt>e177c7</tt></td>
     <td align="center">0.721</td>
     <td align="center">0.765</td>
     <td align="center">0.662</td>
@@ -65,24 +74,10 @@ The following table shows the reproduced results of recall (**R** column in Tabl
   </tbody>
 </table>
 
-> [!NOTE]
-> The model trained on G70M won't be released due to substantial privacy and safety risks associated with [LAION](https://laion.ai/blog/laion-400-open-dataset/#disclaimer--content-warning)'s large-scale, untargeted content scraping.
-
 ### Downloading
 
 The checkpoints can be downloaded from the links in the table above.
-
-- For downloading from Google Drive, one option is to use [gdown](https://github.com/wkentaro/gdown) instead of the web browser:
-
-  ```bash
-  # install gdown toolkit
-  pip install gdown
-
-  # download the checkpoint in terminal
-  gdown --fuzzy https://drive.google.com/file/d/1QYT7kXD9qks6rQh0m2PnVlnSffj8VXNh/view
-  ```
-
-- For downloading from Hugging Face, one option is to use [git-lfs](https://huggingface.co/docs/hub/models-downloading#using-git):
+For downloading from Hugging Face, one option is to use [git-lfs](https://huggingface.co/docs/hub/models-downloading#using-git):
 
   ```bash
   # install git lfs
@@ -133,7 +128,7 @@ top-20 predictions:
 | prob: 0.00665 - counter
 ```
 
-For reference, the output from model trained on G70M is
+The output from model trained on G70M is
 
 ```bash
 top-20 predictions:

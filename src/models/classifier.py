@@ -13,9 +13,8 @@ class LangClassifier(nn.Module):
         self.sampler = nn.Identity()
 
     def encode_images(self, x):
-        h = self.vision_encoder.forward(x)
-        z = self.vision_encoder.proj(h)  # [bs, CLS + patches, dim]
-        return z
+        x = self.vision_encoder.forward(x)
+        return x
 
     def decode_images(self, z):
         x = self.sampler.forward(z)

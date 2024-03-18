@@ -87,19 +87,15 @@ class CLIPViT(nn.Module):
 
     def forward(self, x):
         x = self.conv1(x)  # shape = [*, width, grid, grid]
-        x = x.reshape(x.shape[0], x.shape[1], -1)  # shape = [*, width, grid ** 2]
+
+        bs, c, h, w = x.shape
+        x = x.reshape(bs, c, h * w)  # shape = [*, width, grid ** 2]
         x = x.permute(0, 2, 1)  # shape = [*, grid ** 2, width]
-        x = torch.cat(
-            [
-                self.class_embedding.to(x.dtype)
-                + torch.zeros(
-                    x.shape[0], 1, x.shape[-1], dtype=x.dtype, device=x.device
-                ),
-                x,
-            ],
-            dim=1,
-        )  # shape = [*, grid ** 2 + 1, width]
-        x = x + self.positional_embedding.to(x.dtype)
+
+        class_embed = self.class_embedding.expand(bs, 1, -1)
+        x = torch.cat([class_embed, x], dim=1)  # shape = [*, grid ** 2 + 1, width]
+
+        x = x + self.positional_embedding
         x = self.ln_pre(x)
 
         x = x.permute(1, 0, 2)  # NLD -> LND
@@ -107,7 +103,7 @@ class CLIPViT(nn.Module):
         x = x.permute(1, 0, 2)  # LND -> NLD
 
         x = self.ln_post(x)
-
+        x = self.proj(x)
         return x
 
 
