@@ -13,7 +13,6 @@
 - [ONNX Export](#onnx-export)
     - [Exporting](#exporting)
     - [Inference](#inference)
-    - [More Resources](#more-resources)
 
 
 ## Dependencies
@@ -267,7 +266,7 @@ The numbers should be the same if using the provided checkpoint trained on G3M.
 
 We provide a script [src/onnx_engine.py](../src/onnx_engine.py) to export the model to ONNX format.
 The script is naive and plain to demonstrate the process of exporting our model to ONNX format.
-For more advanced features, please refer to the [pytorch/onnx](https://pytorch.org/docs/stable/onnx.html) and [microsoft/onnxruntime](https://github.com/microsoft/onnxruntime/blob/main/onnxruntime/python/tools/transformers/models/llama/README.md).
+For more advanced features, please refer to the [pytorch/onnx](https://pytorch.org/docs/stable/onnx.html) and [microsoft/onnxruntime on LLaMA/Mistral](https://github.com/microsoft/onnxruntime/blob/main/onnxruntime/python/tools/transformers/models/llama/README.md).
 
 PyTorch version should be `>= 2.1` and other dependencies should be installed automatically sticking to the torch version, such as `onnx`, `onnxruntime`, and others.
 
@@ -318,7 +317,7 @@ Please look at the script [src/onnx_engine.py](../src/onnx_engine.py) and
 
 In [src/models/lang.py](../src/models/lang.py), please
 - comment the normal forward function [L212-L321](../src/models/lang.py#L212-L321);
-- uncomment the three forward functions [L327-L349](../src/models/lang.py#L324-L333).
+- uncomment the three forward functions [L327-L349](../src/models/lang.py#L327-L349).
 
 For each part of the decoder, please modify the `decoder_part = 1` in the line [L113](../src/onnx_engine.py#L113) and modify the `self._forward_onnx_part1` in the line [L336](../src/models/lang.py#L336) at the same time.
 
@@ -418,4 +417,4 @@ top-20 predictions:
 ```
 
 > [!NOTE]
-> A method to further reduce the decoder size is by truncating it to include only one transformer block and the final output layer. Please refer to Table 3. in the paper, which shows the performance of the most compact decoder.
+> A method to further reduce the decoder size is by truncating it to include only one transformer block and the final output layer. Please refer to **Table 3. in the paper**, which shows the performance of the most compact decoder.
