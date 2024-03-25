@@ -6,6 +6,7 @@
   <br/>
   <img width="768" src="./assets/teaser-dark-mode.svg#gh-dark-mode-only">
   <img width="768" src="./assets/teaser-light-mode.svg#gh-light-mode-only">
+  <br/>
   Top-30 predictions with probabilities from our model.
 </p>
 
