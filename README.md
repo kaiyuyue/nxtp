@@ -8,7 +8,7 @@
   <img src="./assets/teaser-light-mode.svg#gh-light-mode-only">
 </p>
 
-> Top-30 predictions with probabilities from our model.[^1] 
+> Top 30 predictions with probabilities from our model on the image of Link from "The Legend of Zelda: Tears of the Kingdom" [^1].
 
 ## Updates
 
