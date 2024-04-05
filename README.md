@@ -9,6 +9,8 @@
 
 > Top 30 predictions with probabilities from our model on the image of "The Legend of Zelda: Tears of the Kingdom" [^1].
 
+## Introduction
+
 This is the official PyTorch implementation for the paper [Object Recognition as Next Token Prediction](https://arxiv.org/abs/2312.02142) accepted at CVPR 2024 (Highlight).
 
 ```bibtex
@@ -32,7 +34,7 @@ Mar 03, 2024
 - add [examples](#examples) with top-20 predictions to this readme
 - add CLIP ViT- L/14 as [the textual embedding model](src/evals/metrics.py#L32) in evaluation metric (Table A.8 of the paper)
 
-## Introduction
+## Method
 
 This project delves into a fundamental problem in computer vision − object recognition − translating an image into object labels.
 
@@ -52,8 +54,8 @@ Additionally, our one-shot sampling technique enables efficient large-scale disc
 
 <p align="center">
   <br/>
-  <img width="512" src="./assets/method-dark-mode.svg#gh-dark-mode-only">
-  <img width="512" src="./assets/method-light-mode.svg#gh-light-mode-only">
+  <img width="640" src="./assets/method-dark-mode.svg#gh-dark-mode-only">
+  <img width="640" src="./assets/method-light-mode.svg#gh-light-mode-only">
   <br/>
 </p>
 
