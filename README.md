@@ -1,19 +1,30 @@
 # Object Recognition as Next Token Prediction
 
-[arXiv](https://arxiv.org/abs/2312.02142) | [Colab](https://colab.research.google.com/drive/1pJX37LP5xGLDzD3H7ztTmpq1RrIBeWX3?usp=sharing) | [Documentation](docs/README.md)
+[arXiv](https://arxiv.org/abs/2312.02142) | [Colab](https://colab.research.google.com/drive/1pJX37LP5xGLDzD3H7ztTmpq1RrIBeWX3?usp=sharing) | [Documentation](docs/README.md) | [Hugging Face](https://huggingface.co/kaiyuyue/nxtp)
 
 <p align="center">
-  <br/>
   <img src="./assets/teaser-dark-mode.svg#gh-dark-mode-only">
   <img src="./assets/teaser-light-mode.svg#gh-light-mode-only">
 </p>
 
-> Top 30 predictions with probabilities from our model on the image of Link from "The Legend of Zelda: Tears of the Kingdom" [^1].
+> Top 30 predictions with probabilities from our model on the image of "The Legend of Zelda: Tears of the Kingdom" [^1].
+
+This is the official PyTorch implementation for the paper [Object Recognition as Next Token Prediction](https://arxiv.org/abs/2312.02142) accepted at CVPR 2024 (Highlight).
+
+```bibtex
+@inproceedings{nxtp,
+  title     = {{Object Recognition as Next Token Prediction}},
+  author    = {Kaiyu Yue and Bor-Chun Chen and Jonas Geiping and Hengduo Li and Tom Goldstein and Ser-Nam Lim},
+  booktitle = {Computer Vision and Pattern Recognition Conference (CVPR)},
+  year      = {2024}
+}
+```
 
 ## Updates
 
 Mar 17, 2024
 
+- release the best [1.78B model](#models) trained on G70M
 - export onnx models: [docs/onnx-export](docs/README.md#onnx-export)
 
 Mar 03, 2024
@@ -39,6 +50,15 @@ Our model predicts labels in a **real-open manner** through auto-regressive proc
 
 Additionally, our one-shot sampling technique enables efficient large-scale discriminative predictions, such as the **top-100** labels.
 
+<p align="center">
+  <br/>
+  <img width="512" src="./assets/method-dark-mode.svg#gh-dark-mode-only">
+  <img width="512" src="./assets/method-light-mode.svg#gh-light-mode-only">
+  <br/>
+</p>
+
+The released models have 1.78B parameters.
+Truncating the model to 0.77B parameters still achieves competitive performance (Table 3 in the paper), which only has one transformer block in the decoder.
 
 ## Examples 
 
