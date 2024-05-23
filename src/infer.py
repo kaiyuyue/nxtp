@@ -1,9 +1,12 @@
 from typing import List
 
 import argparse
+import os
 import time
 import torch
+import matplotlib.pyplot as plt
 
+from tqdm import tqdm
 from collections import defaultdict
 from PIL import Image
 from loader import build_preprocess
@@ -15,7 +18,12 @@ from utils import load_config, set_dtype, load_checkpoint
 
 
 @torch.inference_mode()
-def main(ckpt_path: str, img_path: str, num_labels: int = 10):
+def main(
+    ckpt_path: str,
+    img_path: str,
+    num_labels: int = 10,
+    save_attention_map: bool = False,
+):
     # load config
     cfg = load_config(["--config", "configs/config_g3m.py"]).args
     cfg = set_dtype(cfg)
@@ -102,6 +110,9 @@ def main(ckpt_path: str, img_path: str, num_labels: int = 10):
         tokens = tokens_objs[:, :shave_ind]  # will be final output tokens
         sum_logprobs = torch.zeros(bs, device=device)
 
+        # visualize attention maps
+        cached_tensors = dict() if save_attention_map else None
+
         # start sampling
         x = input_embds
         logits = model.language_decoder.forward(
@@ -113,7 +124,41 @@ def main(ckpt_path: str, img_path: str, num_labels: int = 10):
             prefix_image_tok_embeds=cfg.prefix_image_tok_embeds,
             decouple_label_tok_embeds=cfg.decouple_label_tok_embeds,
             is_train=False,
+            cached_tensors=cached_tensors,
         )
+
+        if save_attention_map:
+            for k in cached_tensors.keys():
+                if not "attn" in k:
+                    continue
+
+                # visualize relatively shallow layers in the decoder
+                # if not "layer_idx_0" in k:
+                #     continue
+
+                print(f"visualizing attention map for {k}")
+                attn_map = cached_tensors[k]
+
+                # extract the attention map for image tokens
+                ii = dummy_token_index_obj
+                ij = dummy_token_index_obj + n_img_tokens
+                attn_map = attn_map[:, :, ii:ij, ii:ij]
+
+                # attention head index: 0-31
+                for head_idx in tqdm(range(attn_map.shape[1]), leave=False):
+                    # save attention map
+                    fig, ax = plt.subplots(16, 16, figsize=(11, 11))
+                    maps = attn_map[0, head_idx]
+                    for i in range(attn_map.shape[2]):
+                        _map = maps[i].reshape(16, 16)
+                        _map = _map.detach().cpu().numpy()
+                        _map = (_map - _map.min()) / (_map.max() - _map.min() + 1e-6)
+                        ax[i // 16, i % 16].imshow(_map, cmap="Blues")
+                        ax[i // 16, i % 16].axis("off")
+                    plt.tight_layout()
+                    os.makedirs("figs", exist_ok=True)
+                    plt.savefig(f"figs/attn_map_{k}_head_idx_{head_idx}.png")
+                    plt.close()
 
         # get the initial tokens after the first forward pass
         tokens, completed = text_decoder.update(tokens, logits, sum_logprobs)
@@ -233,6 +278,7 @@ if __name__ == "__main__":
     parser.add_argument("--ckpt-path", type=str, required=True)
     parser.add_argument("--img-path", type=str, required=True)
     parser.add_argument("--num-labels", type=int, default=10)
+    parser.add_argument("--save-attention-map", type=bool, default=False)
     args = parser.parse_args()
 
-    main(args.ckpt_path, args.img_path, args.num_labels)
+    main(args.ckpt_path, args.img_path, args.num_labels, args.save_attention_map)

@@ -115,7 +115,7 @@ class Attention(nn.Module):
         self.wv = nn.Linear(args.dim, args.n_heads * self.n_embd, bias=False)
         self.wo = nn.Linear(args.n_heads * self.n_embd, args.dim, bias=False)
 
-    def forward(self, x, freqs_cis, mask):
+    def forward(self, x, freqs_cis, mask, cached_tensors=None):
         bs, seqlen, _ = x.shape
         q, k, v = self.wq(x), self.wk(x), self.wv(x)
 
@@ -129,10 +129,13 @@ class Attention(nn.Module):
         k = k.transpose(1, 2)
         v = v.transpose(1, 2)
         attn = torch.matmul(q, k.transpose(2, 3)) / math.sqrt(self.n_embd)
-
         if mask is not None:
             attn = attn + mask
         attn = F.softmax(attn, dim=-1)
+
+        if cached_tensors is not None:
+            layer_idx = cached_tensors["layer_idx"]
+            cached_tensors[f"attn_layer_idx_{layer_idx}"] = attn
 
         x = torch.matmul(attn, v)  # (bs, n_head, slen, n_embd)
         x = x.transpose(1, 2).contiguous().view(bs, seqlen, -1)
@@ -168,9 +171,14 @@ class TransformerBlock(nn.Module):
         self.attention_norm = RMSNorm(args.dim, eps=args.norm_eps)
         self.ffn_norm = RMSNorm(args.dim, eps=args.norm_eps)
 
-    def forward(self, x, freqs_cis, mask):
+    def forward(self, x, freqs_cis, mask, cached_tensors=None):
         h = self.attention_norm(x)
-        h = x + self.attention.forward(h, freqs_cis, mask)
+        h = x + self.attention.forward(
+            h,
+            freqs_cis,
+            mask,
+            cached_tensors=cached_tensors,
+        )
         x = self.ffn_norm(h)
         x = h + self.feed_forward.forward(x)
         return x
@@ -219,6 +227,7 @@ class LLaMATransformer(nn.Module):
         prefix_image_tok_embeds=False,
         decouple_label_tok_embeds=False,
         is_train=True,
+        cached_tensors: Optional[dict] = None,
     ):
         # tokens are ids if ndim == 2 or embeddings if ndim == 3
         bs, seqlen = tokens.shape[:2]
@@ -313,8 +322,10 @@ class LLaMATransformer(nn.Module):
                 if self.decouple_freqs_cis:
                     freqs_cis = freqs_cis_bs
 
-        for layer in self.layers:
-            h = layer(h, freqs_cis, mask)
+        for layer_idx, layer in enumerate(self.layers):
+            if cached_tensors is not None:
+                cached_tensors["layer_idx"] = layer_idx
+            h = layer(h, freqs_cis, mask, cached_tensors=cached_tensors)
         h = self.norm(h)  # [bs, tokens, dim]
 
         output = self.output(h) if is_train else self.output(h[:, -1, :])
