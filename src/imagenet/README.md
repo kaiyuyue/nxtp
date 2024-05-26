@@ -22,9 +22,8 @@ cd imagenet/tools && python3 create_loading_list.py
 ```
 
 ### Results
-||||||
-|:----------:|:------------------------:|:-----:|:-----:|:------:|
 | **params** | **training&nbsp;group**  | **R** | **P** | **F1** |
+|:----------:|:------------------------:|:-----:|:-----:|:------:|
 |      1.78B | ImageNet-1K              | 0.896 | 0.432 | 0.574  | 
 
 The results are obtained by training the model on ImageNet-1K only and evaluating on the validation set.
