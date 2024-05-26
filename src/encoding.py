@@ -15,6 +15,7 @@ def construct_text_inputs(
     is_train=True,
     empty_prompt=False,
     return_strs=False,
+    skip_extract_nouns=False,
 ):
     """
     <|image token embeddings|> text
@@ -79,10 +80,13 @@ def construct_text_inputs(
     if is_train:
         caps = captions
 
-        _func = partial(
-            get_noun_words,
-            contains_number=args.label_contains_number,
-        )
+        if skip_extract_nouns:
+            _func = lambda x: x.lower()
+        else:
+            _func = partial(
+                get_noun_words,
+                contains_number=args.label_contains_number,
+            )
 
         if isinstance(caps[0], list):
             objs = []

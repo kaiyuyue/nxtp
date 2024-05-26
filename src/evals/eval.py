@@ -26,10 +26,10 @@ def main(cfg):
     args = cfg.args
 
     # ------- local settings -------
-    args.batch_size = 32
+    args.batch_size = 4
 
-    # 0: cc3m, 1: coco, 2: openimages
-    args.test_dataset = _TEST_DATASETS[1]
+    # 0: cc3m, 1: coco, 2: openimages, 3: imagenet
+    args.test_dataset = _TEST_DATASETS[3]
 
     args.k_for_topk = 10  # top-k results
     args.xk_for_one_shot_sampling = 0  # top-k + extra k results for one-shot sampling
@@ -200,7 +200,13 @@ def engine_lang_classifier(args, preprocess, model, tokenizer, imgs, paths=None)
         dummy_token_index_cap,
         dummy_token_index_obj,
     ) = construct_text_inputs(
-        args, caps, tokenizer, offset=n_img_tokens, is_train=False
+        args,
+        caps,
+        tokenizer,
+        offset=n_img_tokens,
+        is_train=False,
+        return_strs=False,
+        skip_extract_nouns=args.skip_extract_nouns,
     )
     tokens_caps = tokens_caps.to(device)
     tokens_objs = tokens_objs.to(device)

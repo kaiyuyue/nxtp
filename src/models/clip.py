@@ -85,7 +85,7 @@ class CLIPViT(nn.Module):
         self.ln_post = clip.model.LayerNorm(width)
         self.proj = nn.Parameter(self.scale * torch.randn(width, output_dim))
 
-    def forward(self, x):
+    def forward(self, x, skip_projection=False):
         x = self.conv1(x)  # shape = [*, width, grid, grid]
 
         bs, c, h, w = x.shape
@@ -103,7 +103,9 @@ class CLIPViT(nn.Module):
         x = x.permute(1, 0, 2)  # LND -> NLD
 
         x = self.ln_post(x)
-        x = self.proj(x)
+
+        if not skip_projection:
+            x = self.proj(x)
         return x
 
 

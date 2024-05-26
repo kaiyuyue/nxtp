@@ -50,7 +50,7 @@ def decoder_top_k(logits: Tensor, k: int):
 
 
 class OneShotDecoder:
-    def __init__(self, k: int = 1, max_update_iter: int = 10) -> None:
+    def __init__(self, k: int = 1, max_update_iter: int = 20) -> None:
         self.k = k
 
         # if model is not fully converged, sometimes it will not stop

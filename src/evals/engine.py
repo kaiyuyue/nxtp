@@ -23,6 +23,7 @@ _TEST_DATASETS = {
     0: "cc3m_valid",
     1: "coco_valid",
     2: "openimages_v7_valid",
+    3: "in1k_valid",
 }
 
 _CLIP_MODELS = {
@@ -39,7 +40,12 @@ Loader
 
 
 def init_loader(args, rank, world_size, transform=None):
-    from loader import build_dataloader
+    if "in1k" in args.test_dataset:
+        from imagenet.loader import build_dataloader
+
+        print("loading ImageNet ...")
+    else:
+        from loader import build_dataloader
 
     args.data_name = [args.test_dataset]
     loader = build_dataloader(args, rank, world_size, is_train=False)
@@ -111,10 +117,13 @@ def encode_text_with_clip(clip_model, clip_tokenizer, objs, device=None):
 
 
 def encode_cap_to_objs(args, caps: List[str]) -> List[str]:
-    _func = partial(
-        get_noun_words,
-        contains_number=args.label_contains_number,
-    )
+    if args.skip_extract_nouns:
+        _func = lambda x: x.lower()
+    else:
+        _func = partial(
+            get_noun_words,
+            contains_number=args.label_contains_number,
+        )
     if isinstance(caps[0], list):
         objs = []
         for sublist in caps:
@@ -401,6 +410,7 @@ def evaluate(
                     topk_objs.append(p)
 
             ps: List[List[str]] = topk_objs
+            print(ts, "-------", ps)
 
             vals = {}
             for n, metric in metrics.items():

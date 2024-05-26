@@ -26,6 +26,7 @@ This is the official PyTorch implementation for the paper [Object Recognition as
 
 May 23, 2024
 
+- add ImageNet experiments: see [src/imagenet](src/imagenet/README.md)
 - [visualize attention maps](src/infer.py#L25) in decoder layers during inference: see [examples](#examples)
 
 Mar 17, 2024

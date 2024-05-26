@@ -11,7 +11,6 @@ from torch.optim.lr_scheduler import CosineAnnealingLR
 
 from models.classifier import LangClassifier
 from encoding import construct_text_inputs, construct_embd_inputs
-from loader import build_dataloader
 from functions import load_clip, load_llama
 from utils import (
     load_config,
@@ -47,8 +46,15 @@ def main(cfg):
 
     llama_model, tokenizer, model_args = load_llama(args, device)
     clip_model = load_clip(args, device)
-    dataloader = build_dataloader(args, global_rank, world_size, is_train=True)
 
+    if "in1k" in args.data_name:
+        from imagenet.loader import build_dataloader
+
+        print("loading ImageNet ...")
+    else:
+        from loader import build_dataloader
+
+    dataloader = build_dataloader(args, global_rank, world_size, is_train=True)
     ctx = torch.amp.autocast(device_type="cuda", dtype=args.ptdtype)
     scaler = torch.cuda.amp.GradScaler(enabled=(args.dtype == "float16"))
 
@@ -201,6 +207,7 @@ def main(cfg):
                     offset=n_img_tokens,
                     is_train=True,
                     return_strs=False,
+                    skip_extract_nouns=args.skip_extract_nouns,
                 )
                 (
                     tokens_caps,
@@ -341,8 +348,9 @@ def main(cfg):
                 )
                 pgs = global_step
 
-    # TODO: save the last ckpt
-    save_checkpoint(args, model, optimizer, lr_scheduler, epoch, global_step)
+    # save the last ckpt
+    if master_process:
+        save_checkpoint(args, model, optimizer, lr_scheduler, epoch, global_step)
 
     destroy_process_group()
 

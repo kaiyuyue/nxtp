@@ -63,6 +63,7 @@ class Args:
     special_tokens: tuple = ()
     special_tokens_to_train: tuple = ()
     rm_eos_token_for_objs: bool = bool(1)
+    skip_extract_nouns: bool = bool(0)
 
     # hparams for input text
     label_contains_number: bool = bool(0)
