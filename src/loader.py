@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Sized
 
 import os
 import io
@@ -6,6 +6,7 @@ import torchvision.transforms as T
 
 from PIL import Image
 from torch.utils.data import DataLoader
+from torch.utils.data.datapipes.iter.sharding import SHARDING_PRIORITIES
 from torchdata.datapipes.iter import FileLister, FileOpener
 
 
@@ -75,12 +76,43 @@ def build_datapipe(
     dp = dp.load_from_tar(length=ds_length)
     dp = dp.webdataset()
 
+    def __len__(self):
+        if isinstance(self.source_datapipe, Sized):
+            return len(self.source_datapipe)
+        raise TypeError(f"{type(self).__name__} instance doesn't have valid length")
+
+    # NOTE: monkey-patch the __len__ method
+    # pull: https://github.com/pytorch/data/pull/1289
+    dp.__len__ = __len__.__get__(dp, type(dp))
+    
     if shuffle:
         # do NOT set `shuffle=False` later in the DataLoader
         dp = dp.shuffle()
 
+    def _new_apply_sharding(
+        self, num_of_instances, instance_id, sharding_group=SHARDING_PRIORITIES.DEFAULT
+    ):
+        if instance_id >= num_of_instances:
+            raise ValueError(
+                f"instance_id({instance_id}) should be smaller than num_of_ins    tances({num_of_instances})"
+            )
+        if sharding_group == SHARDING_PRIORITIES.DEFAULT:
+            # avoid setting the same group for multiple times with default group
+            return
+        self.groups[sharding_group] = (num_of_instances, instance_id)
+        self._update_num_of_instances()
+
+    sharding_group = SHARDING_PRIORITIES.DISTRIBUTED
+    assert (
+        sharding_group != SHARDING_PRIORITIES.DEFAULT
+    ), "sharding_group should not be DEFAULT"
     dp = dp.sharding_filter()
-    dp.apply_sharding(num_shards, rank)
+    dp.apply_sharding = _new_apply_sharding.__get__(dp, type(dp))
+    dp.apply_sharding(
+        num_shards,
+        rank,
+        sharding_group=sharding_group,
+    )
 
     print(
         f"dataloader shards info: ",
@@ -142,10 +174,32 @@ def build_dataloader(args, global_rank, world_size, is_train=True):
         rank=global_rank,
     )
 
+    def _worker_init_fn(worker_id):
+        """
+        handle multi-process loading for sharding
+        """
+        worker_info = torch.utils.data.get_worker_info()
+        if worker_info is None:  # single-process loading
+            num_workers = 1
+            worker_id = 0
+        else:  # multi-process loading
+            num_workers = worker_info.num_workers
+            worker_id = worker_info.id
+
+        """
+        def __iter__(self):
+            for i, item in enumerate(self.source_datapipe):
+                if i % self.num_of_instances == self.instance_id:
+                    yield item
+        """
+        dp.datapipe.num_of_instances = dp.datapipe.num_of_instances * num_workers
+        dp.datapipe.instance_id = dp.datapipe.instance_id * num_workers + worker_id
+        
     dl = DataLoader(
         dp,
         batch_size=args.batch_size,
         shuffle=True,
+        worker_init_fn=_worker_init_fn,
         num_workers=args.num_workers,
         pin_memory=args.pin_mem,
         drop_last=True if is_train else False,
