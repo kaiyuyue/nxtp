@@ -83,7 +83,7 @@ def build_datapipe(
 
     # NOTE: monkey-patch the __len__ method
     # pull: https://github.com/pytorch/data/pull/1289
-    dp.__len__ = __len__.__get__(dp, type(dp))
+    type(dp).__len__ = __len__
     
     if shuffle:
         # do NOT set `shuffle=False` later in the DataLoader
