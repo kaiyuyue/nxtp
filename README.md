@@ -194,7 +194,7 @@ top-20 predictions:
 
 ## License
 
-This project is under the CC-BY-NC 4.0 license. See [LICENSE](LICENSE) for details.
+This project is under [MIT LICENSE](LICENSE) for details.
 
 <!-- footnote -->
 [^1]: Image credit: <a href="https://www.nintendo.com/jp/zelda/totk/index.html">ゼルダの伝説 The Legend of Zelda: Tears of the Kingdom</a>.
